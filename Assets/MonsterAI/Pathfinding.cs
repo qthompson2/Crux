@@ -5,10 +5,10 @@ using UnityEngine.AI;
 public class AgentController : MonoBehaviour
 {
     [SerializeField] private Transform goal;
-    [SerializeField] private float repathRate = 3f;
-    [SerializeField] private float minSearchRadius = 10f;
-    [SerializeField] private float destinationTolerance = 1f;
-    [SerializeField] private float arrivalThreshold = 2f;
+    [SerializeField] private float repathRate = 0.2f;
+    [SerializeField] private float minSearchRadius = 8f;
+    [SerializeField] private float destinationTolerance = 2f;
+    [SerializeField] private float arrivalThreshold = 1f;
     [SerializeField] private float maxSearchRadius = 20f;
 
     private NavMeshAgent agent;
