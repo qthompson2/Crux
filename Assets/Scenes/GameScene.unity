@@ -509,10 +509,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goal: {fileID: 526260441}
-  repathRate: 2
-  searchRadius: 15
-  destinationTolerance: 5
+  repathRate: 0.2
+  minSearchRadius: 8
+  destinationTolerance: 2
   arrivalThreshold: 1
+  maxSearchRadius: 20
 --- !u!195 &331530780
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -523,7 +524,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -620,7 +621,7 @@ Transform:
   m_GameObject: {fileID: 331530778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.97, y: 1.67, z: 57.97786}
+  m_LocalPosition: {x: 96.04959, y: 101.2, z: 92.854126}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -726,8 +727,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526260440}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.06780086, y: 0.9024518, z: -0.39652053, w: -0.1541272}
-  m_LocalPosition: {x: 95.44918, y: 100.98, z: 83.07021}
+  m_LocalRotation: {x: -0.24226373, y: -0.57566965, z: 0.18381973, w: -0.7590277}
+  m_LocalPosition: {x: 157.00555, y: 102.2, z: 86.06473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
