@@ -475,6 +475,101 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 448298ca695b04f40bdc83056f13fac9, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1 &285221399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 285221401}
+  - component: {fileID: 285221400}
+  - component: {fileID: 285221402}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &285221400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285221399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d04eab9c95c8ad4796baf83e804e3c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 5
+  runSpeed: 8
+  crouchSpeed: 2.5
+  jumpForce: 7
+  gravity: -9.81
+  crouchHeight: 1
+  standHeight: 2
+  crouchTransitionSpeed: 5
+  mouseSensitivity: 2
+  playerCamera: {fileID: 1254929728}
+  maxLookAngle: 80
+  climbSpeed: 2
+  climbDetectionDistance: 1
+  climbableLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  minClimbAngle: -30
+  maxClimbAngle: 80
+  mantleMaxHeight: 1.5
+  mantleDuration: 0.3
+  mantleLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  mantleVerticalOffset: 0.01
+--- !u!4 &285221401
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285221399}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.12743953, y: -0.3473314, z: 0.047707368, w: -0.92781687}
+  m_LocalPosition: {x: 99.642525, y: 106.885826, z: 17.902224}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1254929728}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &285221402
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285221399}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &331530778
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,7 +607,7 @@ MonoBehaviour:
   repathRate: 0.2
   minSearchRadius: 8
   destinationTolerance: 2
-  arrivalThreshold: 1
+  arrivalThreshold: 2
   maxSearchRadius: 20
 --- !u!195 &331530780
 NavMeshAgent:
@@ -727,8 +822,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526260440}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.24226373, y: -0.57566965, z: 0.18381973, w: -0.7590277}
-  m_LocalPosition: {x: 157.00555, y: 102.2, z: 86.06473}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 157.00555, y: 100.72, z: 86.06473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1257,12 +1352,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254929725}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 285221401}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1254929729
 MonoBehaviour:
@@ -2192,9 +2287,9 @@ MeshFilter:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1254929728}
   - {fileID: 1037723951}
   - {fileID: 1384478564}
   - {fileID: 1567026823}
   - {fileID: 526260441}
   - {fileID: 331530784}
+  - {fileID: 285221401}
