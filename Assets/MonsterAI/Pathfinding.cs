@@ -97,6 +97,12 @@ public class AgentController : MonoBehaviour
         }
     }
 
+    public void SetGoal(Transform newGoal)
+    {
+        goal = newGoal;
+    }
+
+
     void OnDrawGizmosSelected()
     {
         if (goal != null)
