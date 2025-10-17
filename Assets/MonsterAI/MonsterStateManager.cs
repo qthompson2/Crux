@@ -159,7 +159,7 @@ public class MonsterStateManager : MonoBehaviour
                 if (timeExpired || reachedTarget)
                 {
                     Debug.Log("Repositioning target...");
-                    elapsed = 0f; // reset timer
+                    elapsed = 0f;
 
                     float playerDist = Vector3.Distance(
                         new Vector3(transform.position.x, 0f, transform.position.z),
