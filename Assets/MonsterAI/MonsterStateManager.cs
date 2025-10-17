@@ -89,6 +89,7 @@ public class MonsterStateManager : MonoBehaviour
         float horizontalSweepSpeed = 60f;
         int verticalRayCount = 16;
         float verticalAngleRange = 60f;
+        float lurkAngleRange = 30f; 
 
         float elapsed = 0f;
         float currentAngle = -90f;
@@ -96,25 +97,10 @@ public class MonsterStateManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        if (target != null)
-        {
-            float randomAngle = Random.Range(-30f, 30f);
-            Vector3 backwardDir = Quaternion.Euler(0f, randomAngle, 0f) * (-transform.forward);
-
-            float randomDistance = Random.Range(minLurkDistance, maxLurkDistance);
-
-            Vector3 lurkTargetPos = transform.position + backwardDir * randomDistance;
-
-            if (UnityEngine.AI.NavMesh.SamplePosition(lurkTargetPos, out UnityEngine.AI.NavMeshHit hit, 10f, UnityEngine.AI.NavMesh.AllAreas))
-            {
-                target.position = hit.position;
-                Debug.Log($"Lurk target set to {hit.position}");
-            }
-            else
-            {
-                Debug.LogWarning("Could not find valid NavMesh point for lurking — keeping current target.");
-            }
-        }
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        directionToPlayer = -directionToPlayer;
+        directionToPlayer.y = 0f;
+        SetRandomTarget(player.position, minLurkDistance, maxLurkDistance, directionToPlayer, lurkAngleRange);
 
         while (currentState == MonsterState.Lurking)
         {
@@ -180,7 +166,7 @@ public class MonsterStateManager : MonoBehaviour
                         new Vector3(player.position.x, 0f, player.position.z)
                     );
                     float newMaxLurkDistance = Mathf.Min(100f, playerDist - 10f);
-                    SetRandomLurkTarget(minLurkDistance, newMaxLurkDistance);
+                    SetRandomTarget(player.position, minLurkDistance, newMaxLurkDistance, directionToPlayer, lurkAngleRange);
                 }
             }
 
@@ -188,20 +174,33 @@ public class MonsterStateManager : MonoBehaviour
         }
     }
 
-
-
-    private void SetRandomLurkTarget(float minDist, float maxDist)
+    private void SetRandomTarget(Vector3 basePosition, float minDist, float maxDist, Vector3? direction = null, float angleRange = 30f)
     {
-        Vector3 randomDir = Random.insideUnitSphere;
-        randomDir.y = 0f;
-        randomDir.Normalize();
+        if (target == null) return;
+
+        Vector3 randomDir;
+
+        if (direction.HasValue)
+        {
+            float randomAngle = Random.Range(-angleRange, angleRange);
+            randomDir = Quaternion.Euler(0f, randomAngle, 0f) * direction.Value.normalized;
+        }
+        else
+        {
+            randomDir = Random.insideUnitSphere;
+            randomDir.y = 0f;
+            randomDir.Normalize();
+        }
 
         float distance = Random.Range(minDist, maxDist);
-        Vector3 targetPos = player.position + randomDir * distance;
+        Vector3 targetPos = basePosition + randomDir * distance;
 
         target.position = targetPos;
         agentController.SetGoal(target);
+
+        Debug.Log($"Random target set to {target.position}");
     }
+
 
     private IEnumerator ChaseRoutine()
     {
@@ -232,17 +231,12 @@ public class MonsterStateManager : MonoBehaviour
 
     private IEnumerator FleeRoutine()
     {
-        float horizontalOffset = Random.Range(-45, 45);
-        Vector3 baseDir = Vector3.forward;
-        Vector3 fleeDir = Quaternion.Euler(0, horizontalOffset, 0) * baseDir;
-        float fleeDistance = Random.Range(minFleeDistance, maxFleeDistance);
-        Vector3 fleeTargetPos = transform.position + fleeDir * fleeDistance;
-
-        target.position = fleeTargetPos;
-        agentController.SetGoal(target);
+        Vector3 fleeBaseDir = Vector3.forward;
+        float horizontalOffset = Random.Range(-45f, 45f);
+        Vector3 fleeDir = Quaternion.Euler(0, Random.Range(-45f, 45f), 0) * Vector3.forward;
+        SetRandomTarget(transform.position, minFleeDistance, maxFleeDistance, fleeDir, 45f);
 
         yield return new WaitForSeconds(fleeDuration);
-
         SetState(MonsterState.Lurking);
     }
 
