@@ -98,11 +98,6 @@ public class FallingState : BaseState
                 AlignPlayerParallelToSurface(t, avgSideNormal, player.controller.rotationSmoothSpeed);
                 Vector3 horizontalNormal = Vector3.ProjectOnPlane(avgSideNormal, Vector3.up).normalized;
                 Vector3 unstuckMove = horizontalNormal * unstuckSpeed * Time.deltaTime;
-
-                Debug.DrawRay(t.position, -avgSideNormal * 2f, Color.cyan);
-                Debug.DrawRay(t.position, avgSideNormal * 2f, Color.green);
-                Debug.DrawRay(t.position, horizontalNormal * 2f, Color.magenta);
-
                 player.controller.Move(unstuckMove);
                 return;
             }

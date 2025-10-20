@@ -489,7 +489,7 @@ MonoBehaviour:
   playerStateManager: {fileID: 199857960}
   walkSpeed: 5
   sprintSpeedMultiplier: 1.5
-  jumpForce: 5
+  jumpForce: 1.5
   gravity: -9.81
   climbSpeedMultiplier: 0.6
   maxClimbingRotationAngle: 60
@@ -501,7 +501,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  unstuckSpeed: 50
+  unstuckSpeed: 1000
   groundDetectionDistance: 0.75
   lateralOffset: 0.35
   sphereRadius: 0.12
@@ -511,11 +511,11 @@ MonoBehaviour:
   playerHeight: 2
   crouchHeightMultiplier: 0.5
   slideHeightMultiplier: 0.4
-  slideSpeedMultiplier: 1.2
+  slideSpeedMultiplier: 2.5
   crouchSpeedMultiplier: 0.5
   slideDuration: 1
   cameraTransform: {fileID: 1416690958}
-  lookSpeed: 1
+  lookSpeed: 5
   rotationSmoothTime: 0.2
   maxVerticalAngle: 90
 --- !u!114 &199857960

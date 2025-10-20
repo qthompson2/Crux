@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [Header("Move Settings")]
     [SerializeField] public float walkSpeed = 5.0f;
     [SerializeField] public float sprintSpeedMultiplier = 1.5f;
-    [SerializeField] public float jumpForce = 5.0f;
+    [SerializeField] public float jumpForce = 1.5f;
     private Vector3 velocity;
 
     [Header ("Climbing Settings")]
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private float climbingYawOffset = 0f;
     
     [Header ("Landing Detection Settings")]
-    [SerializeField] public float unstuckSpeed = 50f;
+    [SerializeField] public float unstuckSpeed = 1000f;
     [SerializeField] public float groundDetectionDistance = 0.75f;
     [SerializeField] public float lateralOffset = 0.35f;
     [SerializeField] public float sphereRadius = 0.12f;
@@ -39,13 +39,13 @@ public class PlayerController : MonoBehaviour
     [Header ("Crouch/Slide Settings")]
     [SerializeField] public float crouchHeightMultiplier = 0.5f;
     [SerializeField] public float slideHeightMultiplier = 0.4f;
-    [SerializeField] public float slideSpeedMultiplier = 1.2f;
+    [SerializeField] public float slideSpeedMultiplier = 2.5f;
     [SerializeField] private float crouchSpeedMultiplier = 0.5f;
     [SerializeField] public float slideDuration = 1.0f;
 
     [Header ("Camera Settings")]
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] public float lookSpeed = 1.0f;
+    [SerializeField] public float lookSpeed = 10.0f;
     [SerializeField] public float rotationSmoothTime = 0.2f;
     [SerializeField] public float maxVerticalAngle = 90f;
     private float pitch = 0f;
@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour
         if (playerStateManager.currentState is CrouchingState) {
             speedMultiplier = crouchSpeedMultiplier;
         }
-        Debug.DrawRay(transform.position, move * walkSpeed * speedMultiplier * 1000, Color.magenta);
         cc.Move(move * Time.deltaTime * walkSpeed * speedMultiplier);
     }
 
