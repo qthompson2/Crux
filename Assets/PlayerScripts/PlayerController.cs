@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float climbSpeedMultiplier = 0.6f;
     [SerializeField] public float maxClimbingRotationAngle = 60f;
     [SerializeField] public float climbDetectionDistance = 1.5f;
-    [SerializeField] public float groundDetectionDistance = 0.75f;
     [SerializeField] public float sampleDistance = 1.0f;
     [SerializeField] public float stickDistance = 0.12f;
     [SerializeField] public float stickLerp = 8f;
@@ -25,6 +24,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public LayerMask groundMask;
     private float climbingYawOffset = 0f;
     
+    [Header ("Landing Detection Settings")]
+    [SerializeField] public float unstuckSpeed = 50f;
+    [SerializeField] public float groundDetectionDistance = 0.75f;
+    [SerializeField] public float lateralOffset = 0.35f;
+    [SerializeField] public float sphereRadius = 0.12f;
+    [SerializeField] public int requiredValidHits = 3;
+    [SerializeField] public float maxWalkableAngle = 45f;
+    [SerializeField] public float lateralCheckDistance = 1f;
+
     [Header ("Character Settings")]
     [SerializeField] public float playerHeight = 2.0f;
 
@@ -150,7 +158,6 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 lookInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
-        // Apply vertical camera pitch (same in all states)
         pitch -= lookInput.y * lookSpeed;
         pitch = Mathf.Clamp(pitch, -maxVerticalAngle, maxVerticalAngle);
         cameraTransform.localEulerAngles = new Vector3(pitch, 0f, 0f);
@@ -159,28 +166,17 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 wallNormal = GetWallNormal();
             Vector3 wallForward = -wallNormal;
-
-            // Base rotation from wall
             Quaternion wallRotation = Quaternion.LookRotation(wallForward, Vector3.up);
 
-            // Update yaw offset with horizontal mouse input
             climbingYawOffset += lookInput.x * lookSpeed;
-
-            // Clamp the yaw offset to stay within max allowed angle
             climbingYawOffset = Mathf.Clamp(climbingYawOffset, -maxClimbingRotationAngle, maxClimbingRotationAngle);
 
-            // Build target rotation: rotate from wall forward by offset
             Quaternion targetRotation = Quaternion.AngleAxis(climbingYawOffset, Vector3.up) * wallRotation;
-
-            // Smoothly rotate towards the target
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSmoothSpeed);
         }
         else
         {
-            // Free rotation when not climbing
             transform.Rotate(Vector3.up, lookInput.x * lookSpeed);
-
-            // Optionally reset climbing yaw when not climbing
             climbingYawOffset = 0f;
         }
     }
@@ -190,13 +186,23 @@ public class PlayerController : MonoBehaviour
             return;
         }
         if (IsGrounded && velocity.y < 0) {
-            velocity.y = -2f; // small negative value to keep grounded
+            velocity.y = -2f;
         } else {
             velocity.y += gravity * Time.deltaTime;
         }
 
         CharacterController cc = GetComponent<CharacterController>();
         cc.Move(velocity * Time.deltaTime);
+    }
+
+    public Vector3 GetCapsuleBottomWorld()
+    {
+        CharacterController cc = GetComponent<CharacterController>();
+        Transform t = transform;
+        Vector3 centerWorld = t.position + t.TransformVector(cc.center);
+        float halfHeight = cc.height * 0.5f;
+        float bottomY = centerWorld.y - halfHeight + cc.radius;
+        return new Vector3(centerWorld.x, bottomY, centerWorld.z);
     }
 
     void Update()

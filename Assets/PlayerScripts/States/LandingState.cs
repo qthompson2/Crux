@@ -5,6 +5,8 @@ public class LandingState : BaseState
     public override void UpdateState(PlayerStateManager player)
     {
         Vector2 input = player.inputHandler.MoveInput;
+        
+        // ---- Handle Transitions ----
         if (input.magnitude > 0.1f)
         {
             if (player.inputHandler.SprintHeld)
