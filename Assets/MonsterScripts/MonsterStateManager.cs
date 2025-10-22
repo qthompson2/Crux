@@ -33,7 +33,7 @@ public class MonsterStateManager : MonoBehaviour
     private bool gizmoShowVision = true;
     private bool playerInSight = false;
 
-    private MonsterState currentState = MonsterState.Lurking;
+    public MonsterState currentState = MonsterState.Lurking;
     private Coroutine stateRoutine;
 
     void Start()

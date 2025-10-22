@@ -18,16 +18,6 @@ public class JumpingState : BaseState
         player.controller.Jump();
 
         // ---- Handle Transitions ----
-        if (!player.controller.IsGrounded)
-        {
-            player.SwitchState(player.fallingState);
-            return;
-        }
-
-        if (player.inputHandler.ClimbHeld && player.controller.CanClimb)
-        {
-            player.SwitchState(player.climbingState);
-            return;
-        }
+        player.SwitchState(player.fallingState);
     }
 }
