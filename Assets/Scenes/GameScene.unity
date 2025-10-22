@@ -453,7 +453,7 @@ PrefabInstance:
     - target: {fileID: 5129092902228237394, guid: 5bd2da2e35e2e69449630caa1daf3493, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 988993372}
+      objectReference: {fileID: 988993373}
     - target: {fileID: 5129092902228237394, guid: 5bd2da2e35e2e69449630caa1daf3493, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -464,7 +464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5129092902228237394, guid: 5bd2da2e35e2e69449630caa1daf3493, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameObjectManager, Assembly-CSharp
+      value: GameStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5129092902228237394, guid: 5bd2da2e35e2e69449630caa1daf3493, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -1301,8 +1301,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331530778}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5742798, y: 1.021, z: 694.35864}
+  m_LocalRotation: {x: -0.016796185, y: 0.38387546, z: -0.0049528233, w: -0.9232189}
+  m_LocalPosition: {x: 224.43, y: 101.21, z: 368.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   minFleeDistance: 75
   maxFleeDistance: 200
   reachThreshold: 2
-  currentState: 0
+  caughtPlayer: 0
 --- !u!1 &334244934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,6 +1872,34 @@ PrefabInstance:
       propertyPath: m_text
       value: The monster has caught you.
       objectReference: {fileID: 0}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 988993373}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetGameObjects
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameStateManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314782039145390862, guid: d27a225149bc0894f8b1633308ca30a5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2353,7 +2381,7 @@ Transform:
   m_GameObject: {fileID: 988993369}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 594.34076, y: 121.57637, z: 349.40585}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2386,8 +2414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136325dc3d30aaf49a2b640ac9e4f863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStartPosition: {x: 489.8938, y: 101.19, z: 350.254}
-  agentStartPosition: {x: 2.57428, y: 1.021, z: 694.3586}
 --- !u!114 &988993373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2402,8 +2428,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 199857956}
   agent: {fileID: 331530778}
+  playerStartPosition: {x: 489.8938, y: 101.19, z: 350.254}
+  agentStartPosition: {x: 224.43, y: 101.21, z: 368.5}
   uiManager: {fileID: 988993371}
-  gameObjectManager: {fileID: 988993372}
 --- !u!1 &1006598764
 GameObject:
   m_ObjectHideFlags: 0
