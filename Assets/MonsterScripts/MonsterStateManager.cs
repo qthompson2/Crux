@@ -33,8 +33,10 @@ public class MonsterStateManager : MonoBehaviour
     private bool gizmoShowVision = true;
     private bool playerInSight = false;
 
-    public MonsterState currentState = MonsterState.Lurking;
+    private MonsterState currentState = MonsterState.Lurking;
     private Coroutine stateRoutine;
+
+    public bool caughtPlayer = false;
 
     void Start()
     {
@@ -250,6 +252,7 @@ public class MonsterStateManager : MonoBehaviour
             if (dist <= reachThreshold)
             {
                 Debug.Log("Player reached!");
+                caughtPlayer = true;
                 SetState(MonsterState.Fleeing);
                 yield break;
             }

@@ -6,9 +6,12 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] public GameObject player;
     [SerializeField] public GameObject agent;
 
+    [Header("Start Positions")]
+    [SerializeField] private Vector3 playerStartPosition;
+    [SerializeField] private Vector3 agentStartPosition;
+
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
-    [SerializeField] private GameObjectManager gameObjectManager;
 
     void Update()
     {
@@ -25,8 +28,9 @@ public class GameStateManager : MonoBehaviour
                 PauseGameObjects();
             }
         }
-        if (agent.GetComponent<MonsterStateManager>().currentState == MonsterStateManager.MonsterState.Fleeing)
+        if (agent.GetComponent<MonsterStateManager>().caughtPlayer)
         {
+            agent.GetComponent<MonsterStateManager>().caughtPlayer = false;
             uiManager.ShowLoseScreen();
             PauseGameObjects();
         }
@@ -50,5 +54,22 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
         agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 0f;
+    }
+
+    public void ResetGameObjects()
+    {
+        if (player != null)
+        {
+            player.transform.position = playerStartPosition;
+            player.transform.rotation = Quaternion.identity;
+        }
+
+        if (agent != null)
+        {
+            agent.transform.position = agentStartPosition;
+            agent.transform.rotation = Quaternion.identity;
+        }
+        uiManager.HideCurrentScreen();
+        ResumeGameObjects();
     }
 }
