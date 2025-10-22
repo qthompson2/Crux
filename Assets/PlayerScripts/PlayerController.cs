@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float sampleDistance = 1.0f;
     [SerializeField] public float stickDistance = 0.12f;
     [SerializeField] public float stickLerp = 8f;
-    [SerializeField] public float rotationSmoothSpeed = 5f;
+    [SerializeField] public float rotationSmoothSpeed = 6f;
     [SerializeField] public LayerMask groundMask;
     private float climbingYawOffset = 0f;
     
