@@ -176,6 +176,9 @@ public class MonsterStateManager : MonoBehaviour
 
     private void SetRandomTarget(Vector3 basePosition, float minDist, float maxDist, Vector3? direction = null, float angleRange = 30f)
     {
+        int horizontalSlices = 8;
+        int verticalSlices = 8;
+
         if (target == null) return;
 
         Vector3 randomDir;
@@ -196,6 +199,36 @@ public class MonsterStateManager : MonoBehaviour
         Vector3 targetPos = basePosition + randomDir * distance;
 
         target.position = targetPos;
+
+        float verticalAngle;
+        Vector3 checkPos = targetPos;
+        float checkDistance = -1;
+
+        for (int i = 0; i < verticalSlices; i++)
+        {
+            verticalAngle = i * (360 / verticalSlices);
+            for (int j = 0; j < horizontalSlices; j++)
+            {
+                Vector3 dir = Quaternion.Euler(verticalAngle, j * (360 / horizontalSlices), 0) * Vector3.one;
+                dir.Normalize();
+                if (Physics.Raycast(target.position, dir, out RaycastHit hit))
+                {
+                    if (checkDistance == -1)
+                    {
+                        checkPos = hit.point;
+                        checkDistance = hit.distance;
+                    }
+                    else if (checkDistance > hit.distance)
+                    {
+                        checkPos = hit.point;
+                        checkDistance = hit.distance;
+                    }
+                }
+            }
+        }
+
+        target.position = checkPos;
+
         agentController.SetGoal(target);
 
         Debug.Log($"Random target set to {target.position}");
