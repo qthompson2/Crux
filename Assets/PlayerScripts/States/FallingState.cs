@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FallingState : BaseState
@@ -115,10 +116,7 @@ public class FallingState : BaseState
 
     private void AlignPlayerParallelToSurface(Transform t, Vector3 surfaceNormal, float smoothSpeed)
     {
-        Vector3 newUp = Vector3.Cross(t.right, surfaceNormal).normalized;
-        Vector3 newForward = Vector3.Cross(newUp, surfaceNormal).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(newForward, newUp);
-        t.rotation = Quaternion.Slerp(t.rotation, targetRotation, Time.deltaTime * smoothSpeed);
+        t.rotation = Quaternion.Slerp(t.rotation, Quaternion.FromToRotation(Vector3.forward, surfaceNormal), Time.deltaTime * smoothSpeed);
     }
 
     public override void ExitState(PlayerStateManager player)
