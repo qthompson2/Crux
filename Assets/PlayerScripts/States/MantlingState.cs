@@ -5,9 +5,12 @@ public class MantlingState : BaseState
     public override void UpdateState(PlayerStateManager player)
     {
         // Mantle Logic
+        player.controller.jumpForce /= 4;
+        player.controller.Jump();
+        player.controller.jumpForce *= 4;
 
-        // ---- Handle Transitions ----
-        Vector2 input = player.inputHandler.MoveInput;
+		// ---- Handle Transitions ----
+		Vector2 input = player.inputHandler.MoveInput;
         if (input.magnitude > 0.1f)
         {
             if (player.inputHandler.SprintHeld)
