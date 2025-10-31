@@ -2738,7 +2738,6 @@ GameObject:
   m_Component:
   - component: {fileID: 988993370}
   - component: {fileID: 988993371}
-  - component: {fileID: 988993372}
   - component: {fileID: 988993373}
   m_Layer: 0
   m_Name: GameManager
@@ -2746,7 +2745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &988993370
 Transform:
   m_ObjectHideFlags: 0
@@ -2777,18 +2776,6 @@ MonoBehaviour:
   pauseMenuScreen: {fileID: 963576670}
   winScreen: {fileID: 1708708780}
   loseScreen: {fileID: 1060127021}
---- !u!114 &988993372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 988993369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 136325dc3d30aaf49a2b640ac9e4f863, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &988993373
 MonoBehaviour:
   m_ObjectHideFlags: 0
