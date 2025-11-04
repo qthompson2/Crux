@@ -38,7 +38,6 @@ public class StaminaManager : MonoBehaviour
 
     public void RegenerateStamina()
     {
-        // Only regenerate if not full
         if (currentStamina < maxStamina)
         {
             currentStamina += staminaRegenRate * Time.deltaTime;
