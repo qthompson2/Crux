@@ -107,7 +107,7 @@ public class FallingState : BaseState
         Vector3 move = t.right * input.x + t.forward * input.y;
         player.controller.Move(move);
 
-        if (player.inputHandler.ClimbHeld && player.controller.CanClimb)
+        if (player.inputHandler.ClimbHeld && player.controller.CanClimb && player.staminaManager.LabourousActionAllowed())
         {
             player.SwitchState(player.climbingState);
             return;
