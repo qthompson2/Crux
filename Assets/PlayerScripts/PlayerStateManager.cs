@@ -5,6 +5,7 @@ public class PlayerStateManager : MonoBehaviour
     [Header("References")]
     public PlayerController controller;
     public PlayerInputHandler inputHandler;
+    public StaminaManager staminaManager;
     public Transform cameraTransform;
 
     [Header("Current State")]
@@ -35,6 +36,7 @@ public class PlayerStateManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Current Stamina: " + staminaManager.currentStamina);
         if (currentState != null)
             currentState?.UpdateState(this);
     }

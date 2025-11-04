@@ -8,6 +8,7 @@ public class JumpingState : BaseState
         {
             player.controller.Jump();
         }
+        player.staminaManager.DrainStamina(player.staminaManager.jumpCost);
     }
 
     public override void UpdateState(PlayerStateManager player)

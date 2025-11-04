@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Move Settings")]
     [SerializeField] public float walkSpeed = 5.0f;
-    [SerializeField] public float sprintSpeedMultiplier = 1.5f;
+    [SerializeField] public float sprintSpeedMultiplier = 3f;
     [SerializeField] public float jumpForce = 1.5f;
     private Vector3 velocity;
 

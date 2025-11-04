@@ -33,14 +33,14 @@ public class SlidingState : BaseState
                 player.SwitchState(player.idleState);
         }
 
-        if (player.inputHandler.JumpPressed && player.controller.IsGrounded)
+        if (player.inputHandler.JumpPressed && player.controller.IsGrounded && player.staminaManager.LabourousActionAllowed())
         {
             player.controller.Jump();
             player.SwitchState(player.jumpingState);
             return;
         }
 
-        if (player.inputHandler.ClimbHeld && player.controller.CanClimb)
+        if (player.inputHandler.ClimbHeld && player.controller.CanClimb && player.staminaManager.LabourousActionAllowed())
         {
             player.SwitchState(player.climbingState);
             return;
