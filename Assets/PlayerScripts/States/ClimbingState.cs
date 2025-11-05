@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ClimbingState : BaseState
+public class ClimbingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {
