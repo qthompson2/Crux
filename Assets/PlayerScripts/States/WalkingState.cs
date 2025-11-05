@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WalkingState : BaseState
+public class WalkingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {

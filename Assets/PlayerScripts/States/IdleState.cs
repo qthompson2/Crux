@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdleState : BaseState
+public class IdleState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {

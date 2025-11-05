@@ -9,7 +9,7 @@ public class PlayerStateManager : MonoBehaviour
     public Transform cameraTransform;
 
     [Header("Current State")]
-    public BaseState currentState;
+    public PlayerBaseState currentState;
 
     // References to all available states
     public IdleState idleState = new IdleState();
@@ -46,7 +46,7 @@ public class PlayerStateManager : MonoBehaviour
         currentState?.FixedUpdateState(this);
     }
 
-    public void SwitchState(BaseState newState)
+    public void SwitchState(PlayerBaseState newState)
     {
         if (currentState == newState)
             return;

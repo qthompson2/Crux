@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-public class FallingState : BaseState
+public class FallingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {
+        player.staminaManager.DrainOverTime(player.staminaManager.staminaRegenRate);
         float checkDistance = player.controller.groundDetectionDistance;
         float lateralOffset = player.controller.lateralOffset;
         float sphereRadius = player.controller.sphereRadius;

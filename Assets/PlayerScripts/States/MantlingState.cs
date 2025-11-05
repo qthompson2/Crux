@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MantlingState : BaseState
+public class MantlingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {

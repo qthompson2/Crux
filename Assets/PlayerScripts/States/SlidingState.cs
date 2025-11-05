@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SlidingState : BaseState
+public class SlidingState : PlayerBaseState
 {
     private float slideTimer;
 
