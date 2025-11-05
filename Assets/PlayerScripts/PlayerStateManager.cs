@@ -41,11 +41,6 @@ public class PlayerStateManager : MonoBehaviour
             currentState?.UpdateState(this);
     }
 
-    void FixedUpdate()
-    {
-        currentState?.FixedUpdateState(this);
-    }
-
     public void SwitchState(PlayerBaseState newState)
     {
         if (currentState == newState)
