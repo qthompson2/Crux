@@ -3,7 +3,7 @@
 public class StaminaSystemTest : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private StaminaBar staminaBar;  // 👈 plug in your StaminaBar here
+    [SerializeField] private StaminaBar staminaBar;  // plug in your StaminaBar here
 
     [Header("Values")]
     [SerializeField] private float maxStamina = 100f;
@@ -14,46 +14,39 @@ public class StaminaSystemTest : MonoBehaviour
 
     private void Update()
     {
-        float maxCap = maxStamina * (1f - hungerPenalty) * (1f - damagePenalty);
+        // Calculate losses based on penalties
+        float hungerLoss = maxStamina * hungerPenalty;
+        float damageLoss = maxStamina * damagePenalty;
+        float maxCap = Mathf.Max(0f, maxStamina - hungerLoss - damageLoss);
 
-        // Regen stamina toward cap
-        currentStamina = Mathf.MoveTowards(currentStamina, maxCap, regenSpeed * Time.deltaTime);
+        // ✅ Instantly clamp current stamina if the cap decreased
+        if (currentStamina > maxCap)
+            currentStamina = maxCap;
+        else
+            // ✅ Smoothly regen toward cap if below
+            currentStamina = Mathf.MoveTowards(currentStamina, maxCap, regenSpeed * Time.deltaTime);
 
-        // Call the UI update through the bar
+        // Update the UI bar
         if (staminaBar != null)
-        {
-            staminaBar.UpdateBar(currentStamina, maxStamina, maxCap);
-        }
+            staminaBar.UpdateBar(currentStamina, maxStamina, hungerLoss, damageLoss);
     }
 
     // ----- TEST BUTTON HOOKS -----
     public void UseStamina(float amount = 10f)
-    {
-        currentStamina = Mathf.Max(currentStamina - amount, 0);
-    }
+        => currentStamina = Mathf.Max(currentStamina - amount, 0f);
 
     public void RegenStamina(float amount = 10f)
-    {
-        currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
-    }
+        => currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
 
     public void AddDamage(float fraction = 0.1f)
-    {
-        damagePenalty = Mathf.Clamp01(damagePenalty + fraction);
-    }
+        => damagePenalty = Mathf.Clamp01(damagePenalty + fraction);
 
     public void HealDamage(float fraction = 0.1f)
-    {
-        damagePenalty = Mathf.Clamp01(damagePenalty - fraction);
-    }
+        => damagePenalty = Mathf.Clamp01(damagePenalty - fraction);
 
     public void AddHunger(float fraction = 0.1f)
-    {
-        hungerPenalty = Mathf.Clamp01(hungerPenalty + fraction);
-    }
+        => hungerPenalty = Mathf.Clamp01(hungerPenalty + fraction);
 
     public void Eat(float fraction = 0.1f)
-    {
-        hungerPenalty = Mathf.Clamp01(hungerPenalty - fraction);
-    }
+        => hungerPenalty = Mathf.Clamp01(hungerPenalty - fraction);
 }

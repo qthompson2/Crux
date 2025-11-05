@@ -1,26 +1,32 @@
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 public class StaminaBar : MonoBehaviour
 {
-    [SerializeField] private UnityEngine.UI.Image staminaFill;
-    [SerializeField] private UnityEngine.UI.Image capOverlay;
+    [SerializeField] private Image staminaFill; // Bottom layer (usable stamina)
+    [SerializeField] private Image hungerFill;  // Middle layer (hunger reduction)
+    [SerializeField] private Image damageFill;  // Top layer (health reduction)
 
-    public void UpdateBar(float currentStamina, float maxStamina, float maxCap)
+    public void UpdateBar(float currentStamina, float maxStamina, float hungerLoss, float damageLoss)
     {
-        UnityEngine.Debug.Log($"Updating bar: {currentStamina}/{maxStamina} (cap={maxCap})");
-        if (staminaFill != null)
-        {
-            float normalized = Mathf.Clamp01(currentStamina / maxStamina);
-            staminaFill.fillAmount = normalized;
-        }
+        // Clamp all values to stay within 0–maxStamina
+        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
+        hungerLoss = Mathf.Clamp(hungerLoss, 0f, maxStamina);
+        damageLoss = Mathf.Clamp(damageLoss, 0f, maxStamina);
 
-        if (capOverlay != null)
-        {
-            float capNormalized = Mathf.Clamp01(maxCap / maxStamina);
-            capOverlay.fillAmount = capNormalized;
-        }
+        // Convert to normalized 0–1 values
+        float staminaNormalized = Mathf.Clamp01(currentStamina / maxStamina);
+        float damageNormalized = Mathf.Clamp01(damageLoss / maxStamina);
+        float hungerNormalized = Mathf.Clamp01((damageLoss + hungerLoss) / maxStamina);
+
+        // Apply fills in order
+        if (staminaFill != null)
+            staminaFill.fillAmount = staminaNormalized;    // actual usable stamina
+
+        if (damageFill != null)
+            damageFill.fillAmount = damageNormalized;      // red = damage only
+
+        if (hungerFill != null)
+            hungerFill.fillAmount = hungerNormalized;      // yellow = hunger + damage (offset)
     }
 }
