@@ -1215,7 +1215,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 25
+          m_FloatArgument: 0.1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2319,10 +2319,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2232136257632938181, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232136257632938181, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c3cad5a6f877674391ebe02ca4ca8b5, type: 3}
+    - target: {fileID: 2232136257632938181, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Maskable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5053070215838819070, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
       propertyPath: m_Name
       value: StaminaBar
       objectReference: {fileID: 0}
+    - target: {fileID: 7593624622178436774, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7593624622178436774, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c3cad5a6f877674391ebe02ca4ca8b5, type: 3}
+    - target: {fileID: 9183467611973014142, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183467611973014142, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2c3cad5a6f877674391ebe02ca4ca8b5, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
