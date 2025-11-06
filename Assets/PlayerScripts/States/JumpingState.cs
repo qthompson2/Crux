@@ -2,11 +2,19 @@ using UnityEngine;
 
 public class JumpingState : BaseState
 {
+
+    public override void ExitState(PlayerStateManager player)
+    {
+        player.UpdateAnimator(this.GetType().Name, false);
+    }
+
     public override void EnterState(PlayerStateManager player)
     {
+        player.UpdateAnimator(this.GetType().Name, true);
         if (player.controller.IsGrounded)
         {
             player.controller.Jump();
+            
         }
     }
 

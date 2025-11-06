@@ -6,6 +6,7 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerController controller;
     public PlayerInputHandler inputHandler;
     public Transform cameraTransform;
+    public Animator animator;
 
     [Header("Current State")]
     public BaseState currentState;
@@ -26,6 +27,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         controller = GetComponent<PlayerController>();
         inputHandler = GetComponent<PlayerInputHandler>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -53,5 +55,10 @@ public class PlayerStateManager : MonoBehaviour
         currentState = newState;
         Debug.Log("Player State switched to: " + currentState.GetType().Name);
         currentState?.EnterState(this);
+    }
+
+    public void UpdateAnimator(string state, bool on)
+    {
+        animator.SetBool(state, on);
     }
 }

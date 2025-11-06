@@ -2,9 +2,22 @@ using UnityEngine;
 
 public class IdleState : BaseState
 {
+
+    public override void EnterState(PlayerStateManager player)
+    {
+        player.UpdateAnimator(this.GetType().Name, true);
+    }
+
+    public override void ExitState(PlayerStateManager player)
+    {
+        player.UpdateAnimator(this.GetType().Name, false);
+    }
     public override void UpdateState(PlayerStateManager player)
     {
+
         var input = player.inputHandler.MoveInput;
+
+       
 
         // ---- Handle Transitions ----
         if (input.magnitude > 0.1f)

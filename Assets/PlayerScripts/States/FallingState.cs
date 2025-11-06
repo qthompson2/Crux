@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FallingState : BaseState
 {
+
+
     public override void UpdateState(PlayerStateManager player)
     {
         float checkDistance = player.controller.groundDetectionDistance;
@@ -121,6 +123,12 @@ public class FallingState : BaseState
 
     public override void ExitState(PlayerStateManager player)
     {
+        player.UpdateAnimator(this.GetType().Name, false);
         player.controller.ResetRotation();
+    }
+
+    public override void EnterState(PlayerStateManager player)
+    {
+        player.UpdateAnimator(this.GetType().Name, true);
     }
 }
