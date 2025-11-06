@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StaminaManager : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class StaminaManager : MonoBehaviour
     [SerializeField] public float sprintCost = 25f;
     [SerializeField] public float jumpCost = 30f;
 
-    [Header("Penalties (0�1)")]
+    [Header("Penalties (0–1)")]
     [SerializeField, Range(0f, 1f)] private float hungerPenalty = 0f;
     [SerializeField, Range(0f, 1f)] private float damagePenalty = 0f;
 
@@ -24,6 +24,12 @@ public class StaminaManager : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float hungerIncreaseAmount = 0.05f;  // amount to increase each interval
     private float hungerTimer = 0f;              // internal timer accumulator
 
+    [Header("Falling Variables")]
+    public float start_height;
+    public float end_height;
+    public float start_time;
+    public float end_time;
+    [SerializeField] float safeThreashold = 2f;
 
     [Header("Thresholds")]
     [SerializeField] private float labourousActionThreshold = 0.2f;
@@ -93,6 +99,49 @@ public class StaminaManager : MonoBehaviour
     public bool LabourousActionAllowed()
     {
         return GetStaminaPercentage() > labourousActionThreshold;
+    }
+
+    // -------------------------------
+    // FallDamage Calculations
+    // -------------------------------
+    public void checkFallDamage()
+    {
+        // Calculate how far the player fell
+        float fallDistance = start_height - end_height;
+
+        if (fallDistance <= safeThreashold) //If player fell the safe distance don't apply dmg
+        {
+            // Ignore small hops
+            return;
+        }
+
+        // Base flat damage for medium falls
+        float baseDamage = 0.01f; // 1% cap loss (No matter how small the fall they will take 1 damage)
+
+        float damageMultiplier = 0.02f;
+        float exponent = 1.5f;
+
+        float exponentialFactor = damageMultiplier * Mathf.Pow(fallDistance - safeThreashold, exponent); // Exponential scaling for large falls
+        //Player will not take extra damage on the falling with the safe amount
+
+        // Combine damage
+        float totalDamage = baseDamage + exponentialFactor;
+
+        // Clamp the final value to percentage
+        totalDamage = Mathf.Clamp01(totalDamage);
+
+        //Clamp to Max Damage per Fall (60%)
+        //totalDamage = Mathf.Clamp(totalDamage, 0f, 0.6f);
+
+
+        takeFallDamage(totalDamage);
+
+        Debug.Log($"💥 Fall Damage: {totalDamage * 100f:F1}% (fell {fallDistance:F2}m)");
+    }
+
+    private void takeFallDamage(float damage)
+    {
+        AddDamage(damage);
     }
 
     // -------------------------------
