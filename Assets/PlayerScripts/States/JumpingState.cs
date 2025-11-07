@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class JumpingState : BaseState
+public class JumpingState : PlayerBaseState
 {
     public override void EnterState(PlayerStateManager player)
     {

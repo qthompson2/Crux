@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LandingState : BaseState
+public class LandingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {

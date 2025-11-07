@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SprintingState : BaseState
+public class SprintingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {

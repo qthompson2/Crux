@@ -1116,7 +1116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStateManager: {fileID: 199857960}
   walkSpeed: 5
-  sprintSpeedMultiplier: 1.5
+  sprintSpeedMultiplier: 3
   jumpForce: 1.5
   gravity: -9.81
   climbSpeedMultiplier: 0.6
@@ -1201,28 +1201,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &199857964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 199857956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21b4acec20e23e546bdf5de23708265c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  staminaBar: {fileID: 2003208484}
-  maxStamina: 100
-  currentStamina: 0
-  staminaRegenRate: 10
-  climbCost: 20
-  sprintCost: 25
-  jumpCost: 30
-  hungerPenalty: 0
-  damagePenalty: 0
-  labourousActionThreshold: 0.2
 --- !u!1 &257908623
 GameObject:
   m_ObjectHideFlags: 0
