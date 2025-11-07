@@ -10,7 +10,7 @@ public class StaminaManager : MonoBehaviour
     [SerializeField] public float currentStamina;
 
     [Header("Stamina Rates")]
-    [SerializeField] private float staminaRegenRate = 10f;
+    [SerializeField] public float staminaRegenRate = 10f;
     [SerializeField] public float climbCost = 20f;
     [SerializeField] public float sprintCost = 25f;
     [SerializeField] public float jumpCost = 30f;
