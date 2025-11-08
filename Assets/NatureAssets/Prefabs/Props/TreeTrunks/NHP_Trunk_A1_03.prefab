@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6263388406423401679}
   - component: {fileID: 2010062058858419089}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Trunk_A1_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 7424375167680540341}
   - component: {fileID: 3789294457823064214}
   - component: {fileID: 3215047186182154952}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Trunk_A1_03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 4509501908407459256}
   - component: {fileID: 134225261596986527}
   - component: {fileID: 2971680169840707543}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Trunk_A1_03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1623009064989166339}
   - component: {fileID: 581632215820808592}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 9101497853433972000}
   - component: {fileID: 1518886170804931016}
   - component: {fileID: 5477740642306691239}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Trunk_A1_03_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
