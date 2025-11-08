@@ -21,4 +21,15 @@ public class LandingState : PlayerBaseState
             player.SwitchState(player.idleState);
         }
     }
+    public override void EnterState(PlayerStateManager player)
+    {
+        StaminaManager staminaManager = player.staminaManager;
+        if (staminaManager != null)
+        {
+            staminaManager.end_height = player.transform.position.y;
+            staminaManager.end_time = Time.time;
+
+            staminaManager.checkFallDamage();
+        }
+    }
 }
