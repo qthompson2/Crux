@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float climbSpeedMultiplier = 0.6f;
     [SerializeField] public float maxClimbingRotationAngle = 60f;
     [SerializeField] public float climbDetectionDistance = 1.5f;
+    [SerializeField] public float mantlableSurfaceAngle = 0.9f;
     [SerializeField] public float sampleDistance = 1.0f;
     [SerializeField] public float stickDistance = 0.12f;
     [SerializeField] public float stickLerp = 8f;
@@ -74,8 +75,14 @@ public class PlayerController : MonoBehaviour
 
     public bool CanMantle {
         get {
-            // Implement mantle check logic here
-            return false;
+			if (Physics.SphereCast(transform.position, 0.5f, transform.forward, out RaycastHit hit, climbDetectionDistance, groundMask))
+			{
+				if (Vector3.Dot(hit.normal, Vector3.up) > mantlableSurfaceAngle)
+				{
+					return true;
+				}
+			}
+			return false;
         }
     }
 

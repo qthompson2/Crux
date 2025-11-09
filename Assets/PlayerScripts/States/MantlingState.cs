@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class MantlingState : PlayerBaseState
 {
+	public override void EnterState(PlayerStateManager player)
+	{
+		player.controller.jumpForce *= 0.4f;
+        player.controller.Jump();
+        player.controller.jumpForce /= 0.4f;
+	}
+	
     public override void UpdateState(PlayerStateManager player)
     {
-        // Mantle Logic
-
-        // ---- Handle Transitions ----
-        Vector2 input = player.inputHandler.MoveInput;
+		// ---- Handle Transitions ----
+		Vector2 input = player.inputHandler.MoveInput;
         if (input.magnitude > 0.1f)
         {
             if (player.inputHandler.SprintHeld)
