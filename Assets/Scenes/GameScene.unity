@@ -1122,6 +1122,7 @@ MonoBehaviour:
   climbSpeedMultiplier: 0.6
   maxClimbingRotationAngle: 60
   climbDetectionDistance: 1.5
+  mantlableSurfaceAngle: 0.98
   sampleDistance: 1
   stickDistance: 0.12
   stickLerp: 8
@@ -1425,7 +1426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &331530779
 MonoBehaviour:
   m_ObjectHideFlags: 0
