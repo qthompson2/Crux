@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 22686272081971376}
   - component: {fileID: 22686272079071378}
   - component: {fileID: 22686272080071250}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Tree_LP_A1_8m_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,8 @@ GameObject:
   m_Component:
   - component: {fileID: 22686272081971378}
   - component: {fileID: 22686272095493138}
-  m_Layer: 0
+  - component: {fileID: 5633631311631705889}
+  m_Layer: 3
   m_Name: NHP_Tree_LP_A1_8m_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +150,22 @@ LODGroup:
     renderers:
     - renderer: {fileID: 22686272080071254}
   m_Enabled: 1
+--- !u!208 &5633631311631705889
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22686272082334866}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.3, y: 1, z: 0.3}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &22686272082334868
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +177,7 @@ GameObject:
   - component: {fileID: 22686272081971380}
   - component: {fileID: 22686272079071382}
   - component: {fileID: 22686272080071254}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Tree_LP_A1_8m_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +263,7 @@ GameObject:
   - component: {fileID: 22686272081971382}
   - component: {fileID: 22686272079071376}
   - component: {fileID: 22686272080071248}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NHP_Tree_LP_A1_8m_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +348,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6174751679137374860}
   - component: {fileID: 6174751679137374851}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
