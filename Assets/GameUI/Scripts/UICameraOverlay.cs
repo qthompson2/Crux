@@ -7,7 +7,7 @@ public class UICameraOverlay : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] public Image recordingDot;
-    [SerializeField] public TMP_Text timerText;
+    [SerializeField] public TMP_Text dateTimeText;
 
     [Header("Recording Settings")]
     [SerializeField] public float blinkInterval = 0.75f;
@@ -15,16 +15,17 @@ public class UICameraOverlay : MonoBehaviour
     private float elapsedTime = 0f;
     private float blinkTimer = 0f;
     private bool isDotVisible = true;
+    private DateTime startTime = new DateTime(1, 1, 1, 12, 0, 0);
 
     // Update is called once per frame
     void Update()
     {
+        // Update elapsed time
         elapsedTime += Time.deltaTime;
         blinkTimer += Time.deltaTime;
 
-        // Update timer text
-        TimeSpan timeSpan = TimeSpan.FromSeconds(elapsedTime);
-        timerText.text = SpacedOut(string.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds));
+        DateTime simulatedTime = startTime.AddSeconds(elapsedTime);
+        dateTimeText.text = simulatedTime.ToString("HH:mm:ss tt");
 
         // Handle blinking dot
         if (blinkTimer >= blinkInterval)
