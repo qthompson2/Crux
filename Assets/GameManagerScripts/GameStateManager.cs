@@ -43,6 +43,8 @@ public class GameStateManager : MonoBehaviour
 
     public void ResumeGameObjects()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         uiManager.HideCurrentScreen();
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInputHandler>().enabled = true;
@@ -51,6 +53,8 @@ public class GameStateManager : MonoBehaviour
 
     public void PauseGameObjects()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
         agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 0f;

@@ -154,6 +154,8 @@ public class PlayerController : MonoBehaviour
         {
             playerStateManager = GetComponent<PlayerStateManager>();
         }
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetHeight(float heightMultiplier) {
@@ -192,7 +194,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         if (IsGrounded && velocity.y < 0) {
-            velocity.y = -2f;
+            velocity.y = -9.81f;
         } else {
             velocity.y += gravity * Time.deltaTime;
         }
