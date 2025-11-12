@@ -154,6 +154,8 @@ public class PlayerController : MonoBehaviour
         {
             playerStateManager = GetComponent<PlayerStateManager>();
         }
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetHeight(float heightMultiplier) {

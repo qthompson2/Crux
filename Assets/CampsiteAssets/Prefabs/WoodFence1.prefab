@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1025681519535179534}
   - component: {fileID: -4580034871996864676}
   - component: {fileID: -4560218702529177130}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WoodFence1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

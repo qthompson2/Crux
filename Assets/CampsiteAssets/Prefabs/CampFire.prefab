@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 501295248461903503}
   - component: {fileID: 501295248461903500}
   - component: {fileID: 4134586633405174354}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4923,7 +4923,7 @@ GameObject:
   - component: {fileID: 501295248943452728}
   - component: {fileID: 501295248944255512}
   - component: {fileID: 501295248945221848}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CampFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
