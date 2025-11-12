@@ -304,13 +304,13 @@ MonoBehaviour:
     m_Value: 0.1
   _tape:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   _noise:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.75
   _flickering:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   _glitch:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0, b: 0, a: 1}
