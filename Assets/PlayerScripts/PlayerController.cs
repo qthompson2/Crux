@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         if (IsGrounded && velocity.y < 0) {
-            velocity.y = -2f;
+            velocity.y = -9.81f;
         } else {
             velocity.y += gravity * Time.deltaTime;
         }
