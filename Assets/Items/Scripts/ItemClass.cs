@@ -7,10 +7,10 @@ public abstract class ItemClass : MonoBehaviour
     [SerializeField] public string itemName = "New Item";
     [SerializeField, Range(0f, 1f)] public float weight = 0.1f;
     [SerializeField] public float useTime = 1f;
-    [SerializeField] public GameObject prefab;
 
     protected StaminaManager staminaManager;
     protected UseIndicatorUI useIndicator;
+    protected InventoryManager ItemManager;
 
     private bool isBeingUsed = false;
     private Coroutine useRoutine;
@@ -18,7 +18,6 @@ public abstract class ItemClass : MonoBehaviour
     public string ItemName => itemName;
     public float Weight => weight;
     public float UseTime => useTime;
-    public GameObject Prefab => prefab;
 
     /// <summary>
     /// Call this to start using the item (e.g., eating, healing).
@@ -62,6 +61,9 @@ public abstract class ItemClass : MonoBehaviour
         useIndicator?.ResetProgress();
 
         Use();
+        Destroy(gameObject);
+        //Clear Inventory Slot Name
+        ItemManager.ClearItem();
         Debug.Log($"{itemName} use complete!");
     }
 
@@ -73,7 +75,7 @@ public abstract class ItemClass : MonoBehaviour
     /// <summary>
     /// Called when the item is picked up; assigns references and disables world object.
     /// </summary>
-    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef)
+    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef, InventoryManager ItemManagerRef)
     {
         Debug.Log($"{itemName} was picked up.");
 
@@ -91,6 +93,7 @@ public abstract class ItemClass : MonoBehaviour
 
         staminaManager = staminaManagerRef;
         useIndicator = useIndicatorRef;
+        ItemManager = ItemManagerRef;
     }
 
 

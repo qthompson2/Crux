@@ -552,6 +552,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6550492340854264684, guid: 07b89714f9cc2134998e344fe52101cf, type: 3}
+      propertyPath: m_Mass
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7643870274841362497, guid: 07b89714f9cc2134998e344fe52101cf, type: 3}
       propertyPath: m_Name
       value: Hotdog

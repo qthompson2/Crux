@@ -181,7 +181,7 @@ public class InventoryManager : MonoBehaviour
         bool added = AddItem(item);
         if (added)
         {
-            item.OnPickedUp(staminaManager, useIndicator);
+            item.OnPickedUp(staminaManager, useIndicator, this);
         }
         else
         {
@@ -201,7 +201,16 @@ public class InventoryManager : MonoBehaviour
 
         currentItem.BeginUse();
     }
-
+    public void ClearItem()
+    {
+        if (currentItem != null || slots[currentSlotIndex] != null)
+        {
+            currentItem = null;
+            slots[currentSlotIndex] = null;
+            Debug.Log("Clear Item");
+            UpdateUI();
+        }
+    }
     public void CancelUse()
     {
         if (currentItem == null)
