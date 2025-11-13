@@ -1,23 +1,20 @@
-using System.Diagnostics;
 using UnityEngine;
 
 public class HealItem : ItemClass
 {
-    [Range(0f, 1f)]
-    [SerializeField]
+    [SerializeField, Range(0f, 1f)]
     private float healAmount = 0.2f; // 20% heal
-    [SerializeField] private StaminaManager staminaManager;
 
     public override void Use()
     {
         if (staminaManager != null)
         {
             staminaManager.HealDamage(healAmount);
-            UnityEngine.Debug.Log($"{itemName} used: Healed {healAmount} points.");
+            Debug.Log($"{ItemName} used: Healed {healAmount} points.");
         }
         else
         {
-            UnityEngine.Debug.LogWarning("StaminaManager not found, cannot heal.");
+            Debug.LogWarning("StaminaManager not assigned; cannot heal.");
         }
     }
 }

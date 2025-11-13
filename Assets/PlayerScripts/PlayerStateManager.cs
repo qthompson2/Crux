@@ -36,7 +36,7 @@ public class PlayerStateManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Current Stamina: " + staminaManager.currentStamina);
+        //Debug.Log("Current Stamina: " + staminaManager.currentStamina);
         if (currentState != null)
             currentState?.UpdateState(this);
     }

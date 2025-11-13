@@ -16,9 +16,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pick Up/Interact",
+                    "name": "Pick Up",
                     "type": "Button",
                     "id": "4628c184-9fe7-40f5-a2c9-1953d70a7b39",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "8732bb41-0e59-40ca-8a61-4e7d50134ffd",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -33,7 +42,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pick Up/Interact",
+                    "action": "Pick Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -45,6 +54,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8954db96-be43-41ee-ae7e-e7076926cd57",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

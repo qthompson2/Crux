@@ -1,30 +1,37 @@
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
-
 
 public abstract class ItemClass : MonoBehaviour
 {
     [Header("General Item Properties")]
-    public string itemName;
-    [Range(0f, 1f)] public float weight;
-    public float useTime = 1f;
-    public GameObject prefab;
-    
+    [SerializeField] public string itemName = "New Item";
+    [SerializeField, Range(0f, 1f)] public float weight = 0.1f;
+    [SerializeField] public float useTime = 1f;
+    [SerializeField] public GameObject prefab;
 
+    protected StaminaManager staminaManager;
+    protected UseIndicatorUI useIndicator;
 
     private bool isBeingUsed = false;
     private Coroutine useRoutine;
 
-    // Reference to the use indicator UI
-    public UseIndicatorUI useIndicator;
+    public string ItemName => itemName;
+    public float Weight => weight;
+    public float UseTime => useTime;
+    public GameObject Prefab => prefab;
 
+    /// <summary>
+    /// Call this to start using the item (e.g., eating, healing).
+    /// </summary>
     public void BeginUse()
     {
         if (isBeingUsed) return;
         useRoutine = StartCoroutine(UseRoutine());
     }
 
+    /// <summary>
+    /// Call this to cancel using the item (before useTime completes).
+    /// </summary>
     public void CancelUse()
     {
         if (!isBeingUsed) return;
@@ -32,38 +39,80 @@ public abstract class ItemClass : MonoBehaviour
         StopCoroutine(useRoutine);
         isBeingUsed = false;
 
-        if (useIndicator != null)
-            useIndicator.ResetProgress();
+        useIndicator?.ResetProgress();
 
-        UnityEngine.Debug.Log($"{itemName} use cancelled!");
+        Debug.Log($"{itemName} use cancelled!");
     }
 
     private IEnumerator UseRoutine()
     {
         isBeingUsed = true;
-        UnityEngine.Debug.Log($"Started using {itemName}...");
+        Debug.Log($"Started using {itemName}...");
 
         float elapsed = 0f;
         while (elapsed < useTime)
         {
             elapsed += Time.deltaTime;
-
-            // Update progress in the UI
-            if (useIndicator != null)
-                useIndicator.UpdateProgress(elapsed / useTime);
-
+            useIndicator?.UpdateProgress(elapsed / useTime);
             yield return null;
         }
 
-        // Completed use
         isBeingUsed = false;
 
-        if (useIndicator != null)
-            useIndicator.ResetProgress();
+        useIndicator?.ResetProgress();
 
         Use();
-        UnityEngine.Debug.Log($"{itemName} use complete!");
+        Debug.Log($"{itemName} use complete!");
     }
 
+    /// <summary>
+    /// Override this to define what happens when the item is used.
+    /// </summary>
     public abstract void Use();
+
+    /// <summary>
+    /// Called when the item is picked up; assigns references and disables world object.
+    /// </summary>
+    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef)
+    {
+        Debug.Log($"{itemName} was picked up.");
+
+        // Instead of disabling whole GameObject, just hide renderer and collider
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+            r.enabled = false;
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (var c in colliders)
+            c.enabled = false;
+
+        // Detach from world and keep active for logic
+        transform.SetParent(null);
+
+        staminaManager = staminaManagerRef;
+        useIndicator = useIndicatorRef;
+    }
+
+
+    /// <summary>
+    /// Called when the item is dropped; spawns prefab at the drop position.
+    /// </summary>
+    public virtual void OnDropped(Vector3 dropPosition)
+    {
+        Debug.Log($"{itemName} dropped.");
+
+        transform.position = dropPosition;
+
+        // Show the item again
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+            r.enabled = true;
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (var c in colliders)
+            c.enabled = true;
+
+        gameObject.SetActive(true); // you can optionally call this too if you want to ensure active
+    }
+
 }

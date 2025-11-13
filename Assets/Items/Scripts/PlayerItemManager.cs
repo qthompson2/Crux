@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
@@ -9,163 +7,301 @@ public class InventoryManager : MonoBehaviour
 
     [Header("Inventory Settings")]
     [SerializeField] private int maxSlots = 4;
+    private ItemClass[] slots; // Changed to ItemClass[] for consistency with your base class
 
-    private ItemClass[] slots;
+    [Header("References")]
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private float pickupRange = 3f;
+    [SerializeField] private LayerMask itemLayerMask;
+    [SerializeField] private StaminaManager staminaManager;
+    [SerializeField] private UseIndicatorUI useIndicator;
+    [SerializeField] private InventoryUIManager inventoryUIManager;
+
     private PlayerItem inputActions;
 
-    public ItemClass currentItem;
+    public ItemClass currentItem { get; private set; }
+    private int currentSlotIndex = -1;
 
     private void Awake()
     {
+        // Singleton pattern
         if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         slots = new ItemClass[maxSlots];
-
         inputActions = new PlayerItem();
 
-        // Setup callbacks for inputs
         inputActions.ItemInteraction.SetCallbacks(new ItemInteractionHandler(this));
         inputActions.InventorySlots.SetCallbacks(new InventorySlotsHandler(this));
+
+        if (playerCamera == null)
+            playerCamera = Camera.main;
     }
 
-    private void OnEnable()
-    {
-        inputActions.Enable();
-    }
+    private void OnEnable() => inputActions.Enable();
+    private void OnDisable() => inputActions.Disable();
 
-    private void OnDisable()
-    {
-        inputActions.Disable();
-    }
+    // === INVENTORY MANAGEMENT ===
 
-    // Add item to a specific slot
-    public void AddItemToSlot(ItemClass item, int slotIndex)
+    public bool AddItem(ItemClass item)
     {
-        if (slotIndex < 0 || slotIndex >= maxSlots)
+        if (item == null)
         {
-            UnityEngine.Debug.LogWarning("Invalid slot index");
-            return;
+            Debug.LogWarning("Attempted to add null item.");
+            return false;
         }
 
-        if (slots[slotIndex] != null)
+        for (int i = 0; i < maxSlots; i++)
         {
-            UnityEngine.Debug.LogWarning($"Slot {slotIndex + 1} is already occupied.");
-            return;
+            if (slots[i] == null)
+            {
+                slots[i] = item;
+                Debug.Log($"Picked up {item.itemName} and added to slot {i + 1}.");
+                SelectSlot(i);
+                UpdateUI();
+                return true;
+            }
         }
-
-        slots[slotIndex] = item;
-        UnityEngine.Debug.Log($"Added {item.itemName} to slot {slotIndex + 1}");
-
-        // Auto-select if no item selected
-        if (currentItem == null)
-            SelectSlot(slotIndex);
+        Debug.LogWarning("Inventory full! Could not add item.");
+        return false;
     }
 
-    // Remove item from a specific slot
+
     public void RemoveItemFromSlot(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= maxSlots) return;
+        if (slotIndex < 0 || slotIndex >= maxSlots)
+            return;
 
-        if (slots[slotIndex] != null)
+        if (slots[slotIndex] == null)
+            return;
+
+        Debug.Log($"Removed {slots[slotIndex].itemName} from slot {slotIndex + 1}");
+
+        if (currentSlotIndex == slotIndex)
         {
-            UnityEngine.Debug.Log($"Removed {slots[slotIndex].itemName} from slot {slotIndex + 1}");
-            slots[slotIndex] = null;
-
-            // Deselect if currentItem removed
-            if (currentItem == slots[slotIndex])
-                currentItem = null;
+            currentItem = null;
+            currentSlotIndex = -1;
         }
+
+        slots[slotIndex] = null;
+        UpdateUI();
     }
 
-    // Select a slot (sets currentItem)
     public void SelectSlot(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= maxSlots)
         {
-            UnityEngine.Debug.LogWarning("Invalid slot index");
+            Debug.LogWarning("Invalid slot index selected.");
             currentItem = null;
+            currentSlotIndex = -1;
+            UpdateUI();
             return;
         }
 
         currentItem = slots[slotIndex];
+        currentSlotIndex = slotIndex;
+
         if (currentItem != null)
-            UnityEngine.Debug.Log($"Selected slot {slotIndex + 1}: {currentItem.itemName}");
+            Debug.Log($"Selected slot {slotIndex + 1}: {currentItem.itemName}");
         else
-            UnityEngine.Debug.Log($"Slot {slotIndex + 1} is empty.");
+            Debug.Log($"Slot {slotIndex + 1} is empty.");
+
+        UpdateUI();
     }
 
     public void PrintInventory()
     {
-        UnityEngine.Debug.Log("Current inventory:");
+        Debug.Log("Current inventory:");
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i] != null)
-                UnityEngine.Debug.Log($"Slot {i + 1}: {slots[i].itemName}");
-            else
-                UnityEngine.Debug.Log($"Slot {i + 1}: empty");
+            Debug.Log(slots[i] != null
+                ? $"Slot {i + 1}: {slots[i].itemName}"
+                : $"Slot {i + 1}: empty");
         }
     }
 
-    // === Input handlers ===
-    // These handle input callbacks and call the InventoryManager methods.
+    private void UpdateUI()
+    {
+        if (inventoryUIManager != null)
+            inventoryUIManager.UpdateInventoryUI(slots, currentSlotIndex);
+        else
+            Debug.LogWarning("InventoryUIManager reference not set!");
+    }
+
+    // === PICKUP LOGIC ===
+
+    public void TryPickupViaRaycast()
+    {
+        if (playerCamera == null)
+        {
+            Debug.LogWarning("No player camera assigned!");
+            return;
+        }
+
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+
+        Debug.DrawRay(ray.origin, ray.direction * pickupRange, Color.yellow, 0.25f);
+
+        if (Physics.Raycast(ray, out hit, pickupRange, itemLayerMask))
+        {
+            ItemClass item = hit.collider.GetComponent<ItemClass>();
+
+            Debug.DrawLine(ray.origin, hit.point, Color.green, 0.25f);
+
+            if (item != null)
+            {
+                Debug.Log($"[Raycast] Found item '{item.itemName}' to pick up at {hit.point}.");
+                PickUpItem(item);
+            }
+            else
+            {
+                Debug.Log($"[Raycast] Hit non-item object: {hit.collider.name}");
+            }
+        }
+        else
+        {
+            Debug.DrawRay(ray.origin, ray.direction * pickupRange, Color.red, 0.25f);
+            Debug.Log("No item found within pickup range.");
+        }
+    }
+
+    public void PickUpItem(ItemClass item)
+    {
+        if (item == null)
+        {
+            Debug.LogWarning("Attempted to pick up a null item.");
+            return;
+        }
+
+        bool added = AddItem(item);
+        if (added)
+        {
+            item.OnPickedUp(staminaManager, useIndicator);
+        }
+        else
+        {
+            Debug.LogWarning($"Failed to add item {item.itemName} to inventory.");
+        }
+    }
+
+    // === ITEM USAGE ===
+
+    public void UseCurrentItem()
+    {
+        if (currentItem == null)
+        {
+            Debug.Log("No item selected to use.");
+            return;
+        }
+
+        currentItem.BeginUse();
+    }
+
+    public void CancelUse()
+    {
+        if (currentItem == null)
+            return;
+
+        currentItem.CancelUse();
+    }
+
+    // === INPUT HANDLERS ===
 
     private class ItemInteractionHandler : PlayerItem.IItemInteractionActions
     {
-        private InventoryManager manager;
+        private readonly InventoryManager manager;
 
-        public ItemInteractionHandler(InventoryManager invManager)
+        public ItemInteractionHandler(InventoryManager manager)
         {
-            manager = invManager;
+            this.manager = manager;
         }
 
-        public void OnPickUpInteract(InputAction.CallbackContext context)
+        public void OnPickUp(InputAction.CallbackContext context)
         {
-            if (manager.currentItem == null) return;
-
-            if (context.started)
-                manager.currentItem.BeginUse();
-            else if (context.canceled)
-                manager.currentItem.CancelUse();
+            if (context.performed)
+            {
+                if (manager.currentItem == null)
+                {
+                    Debug.Log("No item selected, performing pickup.");
+                    manager.TryPickupViaRaycast();
+                }
+                else
+                {
+                    Debug.Log("Item selected, pickup disabled.");
+                }
+            }
         }
+
 
         public void OnDrop(InputAction.CallbackContext context)
         {
-            // Implement drop if you want
+            if (context.performed && manager.currentItem != null)
+            {
+                Debug.Log($"Dropped {manager.currentItem.itemName}");
+
+                // Desired drop distance, but capped max distance
+                float desiredDropDistance = 1.5f;
+                float maxDropDistance = 3f; // max distance allowed to drop
+
+                // Calculate initial target drop position based on camera forward
+                Vector3 dropPos = manager.playerCamera.transform.position + manager.playerCamera.transform.forward * desiredDropDistance;
+
+                // Check distance from player to dropPos
+                float distance = Vector3.Distance(manager.playerCamera.transform.position, dropPos);
+                if (distance > maxDropDistance)
+                {
+                    dropPos = manager.playerCamera.transform.position + manager.playerCamera.transform.forward * maxDropDistance;
+                }
+
+                // Raycast downward to find ground below drop position
+                RaycastHit hit;
+                float raycastHeight = 5f;
+                Vector3 rayOrigin = dropPos + Vector3.up * raycastHeight;
+
+                if (Physics.Raycast(rayOrigin, Vector3.down, out hit, raycastHeight + 2f))
+                {
+                    dropPos = hit.point + Vector3.up * 0.1f;
+                }
+                else
+                {
+                    Debug.LogWarning("No ground detected below drop position, dropping at default position.");
+                }
+
+                manager.currentItem.OnDropped(dropPos);
+
+                int index = System.Array.IndexOf(manager.slots, manager.currentItem);
+                manager.RemoveItemFromSlot(index);
+            }
+        }
+
+
+        public void OnUse(InputAction.CallbackContext context)
+        {
+            Debug.Log($"OnUse called: phase={context.phase}");
+            if (context.started)
+                manager.UseCurrentItem();
+            else if (context.canceled)
+                manager.CancelUse();
         }
     }
 
     private class InventorySlotsHandler : PlayerItem.IInventorySlotsActions
     {
-        private InventoryManager manager;
+        private readonly InventoryManager manager;
 
-        public InventorySlotsHandler(InventoryManager invManager)
+        public InventorySlotsHandler(InventoryManager manager)
         {
-            manager = invManager;
+            this.manager = manager;
         }
 
-        public void OnSlot1(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-                manager.SelectSlot(0);
-        }
-
-        public void OnSlot2(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-                manager.SelectSlot(1);
-        }
-
-        public void OnSlot3(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-                manager.SelectSlot(2);
-        }
-
-        public void OnSlot4(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-                manager.SelectSlot(3);
-        }
+        public void OnSlot1(InputAction.CallbackContext context) { if (context.performed) manager.SelectSlot(0); }
+        public void OnSlot2(InputAction.CallbackContext context) { if (context.performed) manager.SelectSlot(1); }
+        public void OnSlot3(InputAction.CallbackContext context) { if (context.performed) manager.SelectSlot(2); }
+        public void OnSlot4(InputAction.CallbackContext context) { if (context.performed) manager.SelectSlot(3); }
     }
 }
