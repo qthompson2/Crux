@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
@@ -7,21 +8,24 @@ public class InventoryManager : MonoBehaviour
 
     [Header("Inventory Settings")]
     [SerializeField] private int maxSlots = 4;
-    private ItemClass[] slots; // Changed to ItemClass[] for consistency with your base class
+    private ItemClass[] slots;
 
     [Header("References")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float pickupRange = 3f;
     [SerializeField] private LayerMask itemLayerMask;
     [SerializeField] private StaminaManager staminaManager;
-    [SerializeField] private UseIndicatorUI useIndicator;
     [SerializeField] private InventoryUIManager inventoryUIManager;
+
+    [Header("UI References")]
+    [SerializeField] private UseIndicatorUI useIndicator;
+    [SerializeField] private TextMeshProUGUI lookAtPrompt;
 
     private PlayerItem inputActions;
 
     public ItemClass currentItem { get; private set; }
     private int currentSlotIndex = -1;
-
+    public int MaxSlots => maxSlots;
     private void Awake()
     {
         // Singleton pattern
@@ -40,11 +44,47 @@ public class InventoryManager : MonoBehaviour
 
         if (playerCamera == null)
             playerCamera = Camera.main;
+        if (lookAtPrompt != null)
+            lookAtPrompt.gameObject.SetActive(false);
     }
 
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
+    private void Update()
+    {
+        // Don't do anything if the prompt UI isn't assigned
+        if (lookAtPrompt == null || playerCamera == null)
+            return;
 
+        // Create the ray
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+
+        // Shoot the ray
+        if (Physics.Raycast(ray, out hit, pickupRange, itemLayerMask))
+        {
+            // We hit something on the item layer!
+            ItemClass item = hit.collider.GetComponent<ItemClass>();
+
+            if (item != null)
+            {
+                // It's an item! Format the text and show it.
+                lookAtPrompt.text = $"(E) - {item.ItemName}";
+                lookAtPrompt.gameObject.SetActive(true);
+            }
+            else
+            {
+                // We hit something on the item layer that *isn't* an ItemClass?
+                // Hide the prompt just in case.
+                lookAtPrompt.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            // We are not looking at an item, so hide the prompt.
+            lookAtPrompt.gameObject.SetActive(false);
+        }
+    }
     // === INVENTORY MANAGEMENT ===
 
     public bool AddItem(ItemClass item)
@@ -93,6 +133,11 @@ public class InventoryManager : MonoBehaviour
 
     public void SelectSlot(int slotIndex)
     {
+        if (currentItem != null && currentItem.IsBeingUsed)
+        {
+            Debug.Log($"Cannot switch items while using {currentItem.itemName}!");
+            return; // Abort the slot switch
+        }
         if (slotIndex < 0 || slotIndex >= maxSlots)
         {
             Debug.LogWarning("Invalid slot index selected.");
@@ -249,7 +294,7 @@ public class InventoryManager : MonoBehaviour
 
         public void OnDrop(InputAction.CallbackContext context)
         {
-            if (context.performed && manager.currentItem != null)
+            if (context.performed && manager.currentItem != null && !manager.currentItem.IsBeingUsed)
             {
                 Debug.Log($"Dropped {manager.currentItem.itemName}");
 
@@ -285,6 +330,10 @@ public class InventoryManager : MonoBehaviour
 
                 int index = System.Array.IndexOf(manager.slots, manager.currentItem);
                 manager.RemoveItemFromSlot(index);
+            }
+            else if (context.performed && manager.currentItem != null && manager.currentItem.IsBeingUsed)
+            {
+                Debug.Log($"Cannot drop {manager.currentItem.itemName} while it is being used!");
             }
         }
 

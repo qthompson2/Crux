@@ -4,6 +4,7 @@ using UnityEngine;
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private TMP_Text itemNameText;
+    [SerializeField] public TMP_Text SlotNumber;
 
     /// <summary>
     /// Update the UI to show the item name or "Empty" if no item.

@@ -15,6 +15,7 @@ public abstract class ItemClass : MonoBehaviour
     private bool isBeingUsed = false;
     private Coroutine useRoutine;
 
+    public bool IsBeingUsed => isBeingUsed;
     public string ItemName => itemName;
     public float Weight => weight;
     public float UseTime => useTime;
