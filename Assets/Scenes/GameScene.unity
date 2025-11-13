@@ -1276,6 +1276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   staminaBar: {fileID: 2003208484}
+  inventoryManger: {fileID: 199857965}
   maxStamina: 100
   currentStamina: 0
   maxCap: 0
@@ -1306,6 +1307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSlots: 4
+  weightPenalty: 0
   playerCamera: {fileID: 543037787}
   pickupRange: 3
   itemLayerMask:
@@ -3257,6 +3259,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StaminaBar
       objectReference: {fileID: 0}
+    - target: {fileID: 6841238811942180161, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+      propertyPath: weightFill
+      value: 
+      objectReference: {fileID: 1735033483}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5135,6 +5141,17 @@ MonoBehaviour:
   m_Bidirectional: 0
   m_AutoUpdatePosition: 1
   m_Area: 0
+--- !u!114 &1735033483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6562153799495998535, guid: 29044d2d954c60e4eb61a6d891a83f1d, type: 3}
+  m_PrefabInstance: {fileID: 1043178317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1754646891
 GameObject:
   m_ObjectHideFlags: 0

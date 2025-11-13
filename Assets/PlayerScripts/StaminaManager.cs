@@ -4,6 +4,7 @@ public class StaminaManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private StaminaBar staminaBar;
+    [SerializeField] private InventoryManager inventoryManger;
 
     [Header("Stamina Settings")]
     [SerializeField] private float maxStamina = 100f; // This is Initialized Starting Capactity
@@ -60,7 +61,9 @@ public class StaminaManager : MonoBehaviour
         // Calculate penalties
         float hungerLoss = maxStamina * hungerPenalty;
         float damageLoss = maxStamina * damagePenalty;
-        maxCap = Mathf.Max(0f, maxStamina - hungerLoss - damageLoss);
+        float weightLoss = maxStamina * inventoryManger.weightPenalty;
+
+        maxCap = Mathf.Max(0f, maxStamina - hungerLoss - damageLoss - weightLoss);
 
         // Instantly clamp stamina if the new cap is lower
         if (currentStamina > maxCap)
@@ -71,7 +74,7 @@ public class StaminaManager : MonoBehaviour
 
         // Update UI
         if (staminaBar != null)
-            staminaBar.UpdateBar(currentStamina, maxStamina, hungerLoss, damageLoss);
+            staminaBar.UpdateBar(currentStamina, maxStamina, hungerLoss, damageLoss, weightLoss);
     }
 
     // -------------------------------

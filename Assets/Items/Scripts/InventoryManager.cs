@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Inventory Settings")]
     [SerializeField] private int maxSlots = 4;
     private ItemClass[] slots;
+    public float weightPenalty = 0f;
 
     [Header("References")]
     [SerializeField] private Camera playerCamera;
@@ -123,6 +124,7 @@ public class InventoryManager : MonoBehaviour
 
         if (currentSlotIndex == slotIndex)
         {
+            weightPenalty -= currentItem.weight;
             currentItem = null;
             currentSlotIndex = -1;
         }
@@ -227,6 +229,7 @@ public class InventoryManager : MonoBehaviour
         if (added)
         {
             item.OnPickedUp(staminaManager, useIndicator, this);
+            weightPenalty += item.weight;
         }
         else
         {
@@ -327,9 +330,9 @@ public class InventoryManager : MonoBehaviour
                 }
 
                 manager.currentItem.OnDropped(dropPos);
-
                 int index = System.Array.IndexOf(manager.slots, manager.currentItem);
                 manager.RemoveItemFromSlot(index);
+                
             }
             else if (context.performed && manager.currentItem != null && manager.currentItem.IsBeingUsed)
             {
