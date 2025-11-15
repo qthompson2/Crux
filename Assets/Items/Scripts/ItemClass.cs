@@ -62,8 +62,8 @@ public abstract class ItemClass : MonoBehaviour
         useIndicator?.ResetProgress();
 
         Use();
+        ItemManager.weightPenalty -= weight;
         Destroy(gameObject);
-        //Clear Inventory Slot Name
         ItemManager.ClearItem();
         Debug.Log($"{itemName} use complete!");
     }

@@ -69,14 +69,24 @@ public class InventoryManager : MonoBehaviour
 
             if (item != null)
             {
-                // It's an item! Format the text and show it.
-                lookAtPrompt.text = $"(E) - {item.ItemName}";
-                lookAtPrompt.gameObject.SetActive(true);
+                // === START OF MODIFICATION ===
+                // Check if picking up this item would make the stamina cap < 0
+                if (staminaManager.maxCap - item.weight*100 >0f)
+                {
+                    // Item is pick-up-able
+                    lookAtPrompt.text = $"(E) - {item.ItemName}";
+                    lookAtPrompt.gameObject.SetActive(true);
+                }
+                else
+                {
+                    // Item is too heavy
+                    lookAtPrompt.text = "Too heavy";
+                    lookAtPrompt.gameObject.SetActive(true);
+                }
+                // === END OF MODIFICATION ===
             }
             else
             {
-                // We hit something on the item layer that *isn't* an ItemClass?
-                // Hide the prompt just in case.
                 lookAtPrompt.gameObject.SetActive(false);
             }
         }
@@ -202,6 +212,11 @@ public class InventoryManager : MonoBehaviour
 
             if (item != null)
             {
+                if (!(staminaManager.maxCap - item.weight * 100 > 0f))
+                {
+                    Debug.LogWarning($"Cannot pick up {item.itemName}. Item is too heavy!");
+                    return; // Stop the pickup
+                }
                 Debug.Log($"[Raycast] Found item '{item.itemName}' to pick up at {hit.point}.");
                 PickUpItem(item);
             }
@@ -282,15 +297,8 @@ public class InventoryManager : MonoBehaviour
         {
             if (context.performed)
             {
-                if (manager.currentItem == null)
-                {
-                    Debug.Log("No item selected, performing pickup.");
-                    manager.TryPickupViaRaycast();
-                }
-                else
-                {
-                    Debug.Log("Item selected, pickup disabled.");
-                }
+                Debug.Log("Pickup key pressed, attempting raycast...");
+                manager.TryPickupViaRaycast();
             }
         }
 
