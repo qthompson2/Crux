@@ -34,6 +34,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         //SwitchState(idleState);
         currentState = idleState;
+        playerAnimator?.SetBool(currentState.GetType().Name, true);
     }
 
     void Update()
