@@ -32,7 +32,6 @@ public class PlayerStateManager : MonoBehaviour
 
     void Start()
     {
-        //SwitchState(idleState);
         currentState = idleState;
         playerAnimator?.SetBool(currentState.GetType().Name, true);
     }
@@ -41,7 +40,10 @@ public class PlayerStateManager : MonoBehaviour
     {
         Debug.Log("Current Stamina: " + staminaManager.currentStamina);
         if (currentState != null)
+        {
             currentState?.UpdateState(this);
+            playerAnimator?.SetFloat("Y", inputHandler.MoveInput.y);
+        }
     }
 
     public void SwitchState(PlayerBaseState newState)
