@@ -11,6 +11,7 @@ public class TreeSpawner : MonoBehaviour
     [Header("Placement Options")]
     public float minScale = 0.8f;
     public float maxScale = 1.2f;
+    public bool scaleY = false;
     public bool alignToNormal = true;
 
     public void SpawnTrees()
@@ -58,7 +59,14 @@ public class TreeSpawner : MonoBehaviour
 
             // Random uniform scale
             float randomScale = Random.Range(minScale, maxScale);
-            tree.transform.localScale = Vector3.one * randomScale;
+            if (scaleY)
+            {
+                tree.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
+            }
+            else
+            {
+                tree.transform.localScale = new Vector3(randomScale, tree.transform.localScale.y, randomScale);
+            }
         }
 
         Debug.Log($"Spawned {treeCount} trees into '{container.name}'.");
