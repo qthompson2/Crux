@@ -6,10 +6,6 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] public GameObject player;
     [SerializeField] public GameObject agent;
 
-    [Header("Start Positions")]
-    [SerializeField] private Vector3 playerStartPosition;
-    [SerializeField] private Vector3 agentStartPosition;
-
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
 
@@ -62,18 +58,6 @@ public class GameStateManager : MonoBehaviour
 
     public void ResetGameObjects()
     {
-        if (player != null)
-        {
-            player.transform.position = playerStartPosition;
-            player.transform.rotation = Quaternion.identity;
-        }
-
-        if (agent != null)
-        {
-            agent.transform.position = agentStartPosition;
-            agent.transform.rotation = Quaternion.identity;
-        }
-        uiManager.HideCurrentScreen();
-        ResumeGameObjects();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
