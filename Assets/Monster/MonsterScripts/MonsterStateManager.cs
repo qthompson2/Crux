@@ -21,6 +21,7 @@ public class MonsterStateManager : MonoBehaviour
     [SerializeField] public float lurkDuration = 6f;
     [SerializeField] public float minLurkDistance = 25f;
     [SerializeField] public float maxLurkDistance = 100f;
+    [SerializeField] public float maxLurkTime = 20f;
 
     [Header("Monster Flee Settings")]
     [SerializeField] public float minFleeDistance = 50f;
@@ -46,7 +47,7 @@ public class MonsterStateManager : MonoBehaviour
     void Awake()
     {
         agentController = GetComponent<AgentController>();
-        lurkingState = new LurkingState(visionDistance, horizontalSweepSpeed, verticalRayCount, verticalAngleRange, lurkAngleRange, lurkDuration, minLurkDistance, maxLurkDistance, reachThreshold);
+        lurkingState = new LurkingState(visionDistance, horizontalSweepSpeed, verticalRayCount, verticalAngleRange, lurkAngleRange, lurkDuration, minLurkDistance, maxLurkDistance, reachThreshold, maxLurkTime);
         chasingState = new ChasingState(chaseDuration,  reachThreshold);
         fleeingState = new FleeingState(minFleeDistance, maxFleeDistance, fleeDuration);
     }

@@ -12,14 +12,16 @@ public class LurkingState : MonsterBaseState
     private float minLurkDistance;
     private float reachThreshold;
     private float maxLurkDistance;
+    private float maxLurkTime;
 
     private float elapsed;
+    private float totalLurkTime;
     private float currentAngle;
     private bool sweepingRight;
 
     private Vector3 directionToPlayer;
 
-    public LurkingState(float visionDistance, float horizontalSweepSpeed, int verticalRayCount, float verticalAngleRange, float lurkAngleRange, float lurkDuration, float minLurkDistance, float maxLurkDistance, float reachThreshold)
+    public LurkingState(float visionDistance, float horizontalSweepSpeed, int verticalRayCount, float verticalAngleRange, float lurkAngleRange, float lurkDuration, float minLurkDistance, float maxLurkDistance, float reachThreshold, float maxLurkTime)
     {
         this.visionDistance = visionDistance;
         this.horizontalSweepSpeed = horizontalSweepSpeed;
@@ -30,12 +32,14 @@ public class LurkingState : MonsterBaseState
         this.minLurkDistance = minLurkDistance;
         this.maxLurkDistance = maxLurkDistance;
         this.reachThreshold = reachThreshold;
+        this.maxLurkTime = maxLurkTime;
     }
 
     public override void EnterState(MonsterStateManager monster)
     {
         Debug.Log("Entering Lurk State...");
         elapsed = 0f;
+        totalLurkTime = 0f;
         currentAngle = -90f;
         sweepingRight = true;
 
@@ -62,6 +66,14 @@ public class LurkingState : MonsterBaseState
 
     public override void UpdateState(MonsterStateManager monster)
     {
+        if (totalLurkTime >= maxLurkTime)
+        {
+            totalLurkTime = 0f;
+            Debug.Log("Max Lurk Time exceeded — switching to Chase!");
+            monster.SwitchState(monster.chasingState);
+            return;
+        }
+        totalLurkTime += Time.deltaTime;
         elapsed += Time.deltaTime;
 
         // Horizontal sweep motion
