@@ -81,4 +81,12 @@ public class SpiderController : MonoBehaviour
         BoxCollider.enabled = true;
         CapsuleCollider.enabled = true;
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<StaminaManager>().AddDamage();
+        }
+    }
 }
