@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 4404082697176169035}
   - component: {fileID: 6936725957008249136}
   - component: {fileID: 2696166193483915610}
-  - component: {fileID: 8871886345428186914}
   - component: {fileID: -6550492340854264684}
+  - component: {fileID: -2268985514705553676}
   m_Layer: 7
-  m_Name: Medkit
+  m_Name: Extrodinary Food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,22 +110,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8871886345428186914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643870274841362497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84cc3eadd9320cc48b0bbe8d80769b8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: Medkit
-  weight: 0.25
-  useTime: 3
-  healAmount: 0.2
 --- !u!54 &-6550492340854264684
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -134,7 +118,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643870274841362497}
   serializedVersion: 4
-  m_Mass: 0.2
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -153,3 +137,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &-2268985514705553676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643870274841362497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b504d48cded7eea45848ba074fce45fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Hotdog
+  weight: 0.1
+  useTime: 1
+  itemIcon: {fileID: 21300000, guid: 2c3cad5a6f877674391ebe02ca4ca8b5, type: 3}
+  foodValue: 0.1

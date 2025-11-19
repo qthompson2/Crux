@@ -7,6 +7,7 @@ public abstract class ItemClass : MonoBehaviour
     [SerializeField] public string itemName = "New Item";
     [SerializeField, Range(0f, 1f)] public float weight = 0.1f;
     [SerializeField] public float useTime = 1f;
+    [SerializeField] public Sprite itemIcon;
 
     protected StaminaManager staminaManager;
     protected UseIndicatorUI useIndicator;
@@ -19,6 +20,7 @@ public abstract class ItemClass : MonoBehaviour
     public string ItemName => itemName;
     public float Weight => weight;
     public float UseTime => useTime;
+    public Sprite ItemIcon => itemIcon;
 
     /// <summary>
     /// Call this to start using the item (e.g., eating, healing).
