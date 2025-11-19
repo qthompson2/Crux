@@ -9,6 +9,8 @@ public class MonsterManager : MonoBehaviour
     private Transform player;
     private List<GameObject> monsters;
     private bool isActive = false;
+    private bool hasActivated = false;
+    private bool isPaused = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,9 +34,12 @@ public class MonsterManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.position.z < spiderSpawnZ)
+        if (!hasActivated)
 		{
-			SetMonstersActive(true);
+			if (player.position.z < spiderSpawnZ)
+            {
+                SetMonstersActive(true);
+            }
 		}
     }
 
@@ -46,6 +51,25 @@ public class MonsterManager : MonoBehaviour
             foreach (GameObject monster in monsters)
             {
                 monster.SetActive(isActive);
+            }
+		}
+
+        hasActivated = true;
+	}
+
+    public void TogglePause()
+	{
+		if (hasActivated)
+		{
+			if (!isPaused)
+            {
+                SetMonstersActive(false);
+                isPaused = true;
+            }
+            else
+            {
+                SetMonstersActive(true);
+                isPaused = false;
             }
 		}
 	}
