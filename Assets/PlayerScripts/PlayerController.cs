@@ -33,8 +33,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int requiredValidHits = 3;
     [SerializeField] public float maxWalkableAngle = 45f;
     [SerializeField] public float lateralCheckDistance = 1f;
-
-
     [SerializeField] public FallProbe probe;
     [SerializeField] public float airControlSpeed = 6.5f;
 
@@ -59,13 +57,16 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            if (Physics.SphereCast(transform.position, 0.5f, Vector3.down, out RaycastHit hit, groundDetectionDistance, groundMask))
+            Vector3 origin = transform.position + Vector3.up * 0.1f; // small lift
+            float radius = 0.45f;
+            float distance = groundDetectionDistance + 0.1f;
+
+            if (Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit hit, distance, groundMask))
             {
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
-
-                if (angle <= maxWalkableAngle)
-                    return true;
+                return angle <= maxWalkableAngle;
             }
+
             return false;
         }
     }
