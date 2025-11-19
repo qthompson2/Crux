@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -6,9 +8,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] public GameObject pauseMenuScreen;
     [SerializeField] public GameObject winScreen;
     [SerializeField] public GameObject loseScreen;
+    [SerializeField] private GameObject fadeOutPanel;
+    private Image panelImage;
     private GameObject currentScreen;
 
-    private void ShowScreen(GameObject screen)
+	void Start()
+	{
+		panelImage = fadeOutPanel.GetComponent<Image>();
+	}
+
+	private void ShowScreen(GameObject screen)
     {
         if (currentScreen != null)
         {
@@ -27,7 +36,7 @@ public class UIManager : MonoBehaviour
     }
     public void ShowWinScreen()
     {
-        ShowScreen(winScreen);
+        StartCoroutine(FadeOutToScreen(winScreen));
     }
     public void ShowLoseScreen()
     {
@@ -47,4 +56,16 @@ public class UIManager : MonoBehaviour
     {
         return currentScreen;
     }
+
+    private IEnumerator FadeOutToScreen(GameObject screen)
+	{
+        while (panelImage.color.a < 1)
+        {
+			panelImage.color = new(panelImage.color.r, panelImage.color.g, panelImage.color.b, panelImage.color.a + 0.01f);
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        ShowScreen(screen);
+        panelImage.color = new(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0);
+	}
 }
