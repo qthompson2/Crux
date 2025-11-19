@@ -5,7 +5,10 @@ public class SprintingState : PlayerBaseState
     public override void UpdateState(PlayerStateManager player)
     {
         var input = player.inputHandler.MoveInput;
-        player.staminaManager.DrainOverTime(player.staminaManager.sprintCost);
+        if (input.magnitude > 0.1f)
+        {
+            player.staminaManager.DrainOverTime(player.staminaManager.sprintCost);
+        }
 
         // ---- Handle Transitions ----
 

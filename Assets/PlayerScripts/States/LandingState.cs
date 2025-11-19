@@ -23,6 +23,7 @@ public class LandingState : PlayerBaseState
     }
     public override void EnterState(PlayerStateManager player)
     {
+        player.controller.StoredJumpMomentum = Vector3.zero;
         StaminaManager staminaManager = player.staminaManager;
         if (staminaManager != null)
         {

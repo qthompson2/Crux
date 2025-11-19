@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float walkSpeed = 5.0f;
     [SerializeField] public float sprintSpeedMultiplier = 3f;
     [SerializeField] public float jumpForce = 1.5f;
+    public Vector3 StoredJumpMomentum;
+    public Vector3 LastGroundedMove;
     private Vector3 velocity;
 
     [Header ("Climbing Settings")]
@@ -114,21 +116,22 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 move) {
         CharacterController cc = GetComponent<CharacterController>();
+
         float speedMultiplier = 1.0f;
-        if (playerStateManager.currentState is ClimbingState) {
-            speedMultiplier = climbSpeedMultiplier;
-        }
-        if (playerStateManager.currentState is SprintingState) {
-            speedMultiplier = sprintSpeedMultiplier;
-        }
-        if (playerStateManager.currentState is SlidingState) {
-            speedMultiplier = slideSpeedMultiplier;
-        }
-        if (playerStateManager.currentState is CrouchingState) {
-            speedMultiplier = crouchSpeedMultiplier;
-        }
-        cc.Move(move * Time.deltaTime * walkSpeed * speedMultiplier);
+        if (playerStateManager.currentState is ClimbingState) speedMultiplier = climbSpeedMultiplier;
+        if (playerStateManager.currentState is SprintingState) speedMultiplier = sprintSpeedMultiplier;
+        if (playerStateManager.currentState is SlidingState) speedMultiplier = slideSpeedMultiplier;
+        if (playerStateManager.currentState is CrouchingState) speedMultiplier = crouchSpeedMultiplier;
+
+        Vector3 finalMove = move * walkSpeed * speedMultiplier;
+
+        // Capture grounded motion for later use in jump
+        if (IsGrounded && finalMove.sqrMagnitude > 0.0001f)
+            LastGroundedMove = finalMove;   // finalMove already includes speed multipliers
+
+        cc.Move(finalMove * Time.deltaTime);
     }
+
 
     public void Jump() {
         if (IsGrounded) {
