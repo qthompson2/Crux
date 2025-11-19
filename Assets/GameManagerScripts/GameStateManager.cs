@@ -8,6 +8,8 @@ public class GameStateManager : MonoBehaviour
 
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
+    private float oldStaminaRegen;
+    private float oldAgentSpeed;
 
     void Update()
     {
@@ -44,7 +46,8 @@ public class GameStateManager : MonoBehaviour
         uiManager.HideCurrentScreen();
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInputHandler>().enabled = true;
-        agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10f;
+        player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
+        agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = oldAgentSpeed;
     }
 
     public void PauseGameObjects()
@@ -53,7 +56,8 @@ public class GameStateManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
-        agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 0f;
+        (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
+        (oldAgentSpeed, agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed) = (agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed, 0f);
     }
 
     public void ResetGameObjects()
