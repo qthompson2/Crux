@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5667540037695108371}
   - component: {fileID: 2580540788933520946}
   - component: {fileID: 2803686058515843938}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Opener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,9 +58,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -97,7 +94,7 @@ GameObject:
   - component: {fileID: 5967533886757439922}
   - component: {fileID: 1138628473357432755}
   - component: {fileID: 43705705940343459}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: _SodaCan_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,9 +142,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -182,7 +176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9024553339077406933}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: SodaCan_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

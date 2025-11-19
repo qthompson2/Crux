@@ -130,5 +130,5 @@ AssetOrigin:
   productId: 313893
   packageName: Low Poly Stylized Foods
   packageVersion: 1.0
-  assetPath: Assets/CrowAssets/Assets/Low Poly Stylized Food/Textures/Soda Can/SodaCan_01_tex.png
+  assetPath: Assets/Items/Prefabs/Items/Food/Textures/Soda Can/SodaCan_01_tex.png
   uploadId: 742005
