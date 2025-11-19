@@ -6,19 +6,16 @@ public class JumpingState : PlayerBaseState
     {
         if (player.controller.IsGrounded)
         {
+            player.controller.probe.Deactivate();
+
+            // Apply the upward impulse ONCE.
             player.controller.Jump();
+
+            // Drain stamina ONCE.
+            player.staminaManager.DrainStamina(player.staminaManager.jumpCost);
         }
-        player.staminaManager.DrainStamina(player.staminaManager.jumpCost);
-    }
 
-    public override void UpdateState(PlayerStateManager player)
-    {
-        Vector2 input = player.inputHandler.MoveInput;
-        Vector3 move = player.transform.right * input.x + player.transform.forward * input.y;
-        player.controller.Move(move);
-        player.controller.Jump();
-
-        // ---- Handle Transitions ----
+        // Immediately transition to falling.
         player.SwitchState(player.fallingState);
     }
 }

@@ -34,6 +34,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float maxWalkableAngle = 45f;
     [SerializeField] public float lateralCheckDistance = 1f;
 
+
+    [SerializeField] public FallProbe probe;
+    [SerializeField] public float airControlSpeed = 6.5f;
+
     [Header ("Character Settings")]
     [SerializeField] public float playerHeight = 2.0f;
 
@@ -51,12 +55,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float maxVerticalAngle = 90f;
     private float pitch = 0f;
 
-    public bool IsGrounded {
-        get {
-            RaycastHit hit;
-            if (Physics.SphereCast(transform.position, 0.5f, Vector3.down, out hit, groundDetectionDistance, groundMask))
+    public bool IsGrounded
+    {
+        get
+        {
+            if (Physics.SphereCast(transform.position, 0.5f, Vector3.down, out RaycastHit hit, groundDetectionDistance, groundMask))
             {
-                return true;
+                float angle = Vector3.Angle(hit.normal, Vector3.up);
+
+                if (angle <= maxWalkableAngle)
+                    return true;
             }
             return false;
         }
