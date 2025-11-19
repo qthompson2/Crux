@@ -147,7 +147,7 @@ public class MonsterStateManager : MonoBehaviour
     public void EnableChaseEffect()
     {
         Debug.Log("Enabling Chase VHS Effect");
-        vhsEffect._weight.value = 1f;
+        vhsEffect._weight.value = 0.5f;
     }
 
     public void DisableChaseEffect()

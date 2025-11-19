@@ -1035,7 +1035,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4682169245736997737}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.5
+  m_Radius: 2
   m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1081,8 +1081,10 @@ MonoBehaviour:
   player: {fileID: 0}
   target: {fileID: 145839779568297719}
   agentController: {fileID: 1661563879258678207}
+  vhsEffect: {fileID: 0}
   chaseDuration: 10
   reachThreshold: 2
+  alertThreshold: 25
   visionDistance: 50
   horizontalSweepSpeed: 60
   verticalRayCount: 50
@@ -1091,6 +1093,8 @@ MonoBehaviour:
   lurkDuration: 6
   minLurkDistance: 35
   maxLurkDistance: 150
+  maxLurkTime: 20
+  chaseDistanceThreshold: 15
   minFleeDistance: 75
   maxFleeDistance: 200
   fleeDuration: 8
