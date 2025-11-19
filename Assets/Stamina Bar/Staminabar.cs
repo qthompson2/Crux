@@ -10,13 +10,13 @@ public class StaminaBar : MonoBehaviour
 
     public void UpdateBar(float currentStamina, float maxStamina, float hungerLoss, float damageLoss, float weightLoss)
     {
-        // Clamp all values to stay within 0–maxStamina
+        // Clamp all values to stay within 0ï¿½maxStamina
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
         hungerLoss = Mathf.Clamp(hungerLoss, 0f, maxStamina);
         damageLoss = Mathf.Clamp(damageLoss, 0f, maxStamina);
         weightLoss = Mathf.Clamp(weightLoss, 0f, maxStamina);
 
-        // Convert to normalized 0–1 values
+        // Convert to normalized 0ï¿½1 values
         float staminaNormalized = Mathf.Clamp01(currentStamina / maxStamina);
         float damageNormalized = Mathf.Clamp01(damageLoss / maxStamina);
         float hungerNormalized = Mathf.Clamp01((damageLoss + hungerLoss) / maxStamina);
@@ -32,7 +32,7 @@ public class StaminaBar : MonoBehaviour
         if (hungerFill != null)
             hungerFill.fillAmount = hungerNormalized;      // yellow = hunger + damage (offset)
 
-        if (weightFill!= null)
+        if (weightFill != null)
             weightFill.fillAmount = weightNormalized;      // orange = hunger + damage + weight (offset)
     }
 }
