@@ -48,7 +48,6 @@ public class FallingState : PlayerBaseState
         float verticalDelta = Mathf.Abs((probe.transform.position.y + 0.5f) - player.transform.position.y);
         bool closeEnough = verticalDelta < 0.2f;
 
-
         // -------------------------------------------------
         // 2. DEFINITIVE LANDING RULE
         // Must meet ONE ground condition AND proximity condition
@@ -62,6 +61,11 @@ public class FallingState : PlayerBaseState
             return;
         }
 
+        if (player.inputHandler.ClimbHeld && player.controller.CanClimb && player.staminaManager.LabourousActionAllowed())
+        { 
+            player.SwitchState(player.climbingState);
+            return;
+        }
 
         // -------------------------------------------------
         // 3. CONTINUE NORMAL FALLING MOTION
