@@ -1,28 +1,43 @@
-using TMPro; // or UnityEngine.UI if you prefer Text
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
     [SerializeField] private TMP_Text itemNameText;
     [SerializeField] public TMP_Text SlotNumber;
+    [SerializeField] public Image ImageSlot;
 
-    /// <summary>
-    /// Update the UI to show the item name or "Empty" if no item.
-    /// </summary>
     public void UpdateSlot(ItemClass item)
     {
-        if (item != null)
-            itemNameText.text = item.itemName;
-        else
+        // --- Case: Empty slot ---
+        if (item == null)
+        {
+            ImageSlot.enabled = false;
+            itemNameText.enabled = true;
             itemNameText.text = "Empty";
+            return;
+        }
+
+        // --- Case: Item has an icon ---
+        if (item.itemIcon != null)
+        {
+            itemNameText.enabled = false;
+            ImageSlot.enabled = true;
+            ImageSlot.sprite = item.itemIcon;
+            return;
+        }
+
+        // --- Case: Item has no icon, show name ---
+        
+        ImageSlot.enabled = false;
+        itemNameText.enabled = true;
+        itemNameText.text = item.itemName;
     }
 
-    /// <summary>
-    /// Highlight this slot if it is selected.
-    /// </summary>
     public void SetSelected(bool isSelected)
     {
         itemNameText.color = isSelected ? Color.yellow : Color.white;
-        // You can also update background color, add outlines, etc.
+        SlotNumber.color = isSelected ? Color.yellow : Color.white;
     }
 }
