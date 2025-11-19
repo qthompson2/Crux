@@ -85,23 +85,23 @@ public class FallingState : PlayerBaseState
         // 4. AIR CONTROL + preserved momentum
         // -------------------------------------------------
 
-        Vector3 airMove =
-            player.transform.right * player.inputHandler.MoveInput.x +
-            player.transform.forward * player.inputHandler.MoveInput.y;
+        // Vector3 airMove =
+        //     player.transform.right * player.inputHandler.MoveInput.x +
+        //     player.transform.forward * player.inputHandler.MoveInput.y;
 
-        // Combine stored momentum + air steering
-        Vector3 finalAirMove =
-            player.controller.StoredJumpMomentum +
-            (airMove * player.controller.airControlSpeed);
+        // // Combine stored momentum + air steering
+        // Vector3 finalAirMove =
+        //     player.controller.StoredJumpMomentum +
+        //     (airMove * player.controller.airControlSpeed);
 
-        player.controller.Move(finalAirMove * Time.deltaTime);
+        // player.controller.Move(finalAirMove * Time.deltaTime);
 
-        // Gradually decay the stored momentum
-        player.controller.StoredJumpMomentum = Vector3.Lerp(
-            player.controller.StoredJumpMomentum,
-            Vector3.zero,
-            Time.deltaTime * 2f   // adjust decay speed if needed
-        );
+        // // Gradually decay the stored momentum
+        // player.controller.StoredJumpMomentum = Vector3.Lerp(
+        //     player.controller.StoredJumpMomentum,
+        //     Vector3.zero,
+        //     Time.deltaTime * 2f   // adjust decay speed if needed
+        // );
 
     }
 
