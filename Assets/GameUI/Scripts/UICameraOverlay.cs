@@ -16,12 +16,16 @@ public class UICameraOverlay : MonoBehaviour
     private float blinkTimer = 0f;
     private bool isDotVisible = true;
     private DateTime startTime = new DateTime(1, 1, 1, 12, 0, 0);
+    private bool isPaused = false;
 
     // Update is called once per frame
     void Update()
     {
         // Update elapsed time
-        elapsedTime += Time.deltaTime;
+        if (!isPaused)
+		{
+			elapsedTime += Time.deltaTime;
+		}
         blinkTimer += Time.deltaTime;
 
         DateTime simulatedTime = startTime.AddSeconds(elapsedTime);
@@ -35,6 +39,11 @@ public class UICameraOverlay : MonoBehaviour
             blinkTimer = 0f;
         }
     }
+
+    public float GetPlaybackTime()
+	{
+		return elapsedTime;
+	}
 
     void OnEnable()
     {
@@ -52,4 +61,9 @@ public class UICameraOverlay : MonoBehaviour
     {
         return string.Join(" ", input.ToCharArray());
     }
+
+    public void TogglePause()
+	{
+		isPaused = !isPaused;
+	}
 }

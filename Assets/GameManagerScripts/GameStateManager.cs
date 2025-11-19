@@ -4,12 +4,12 @@ public class GameStateManager : MonoBehaviour
 {
     [Header("Game Objects")]
     [SerializeField] public GameObject player;
-    [SerializeField] public GameObject agent;
+    [SerializeField] private GameObject monsters;
+    [SerializeField] private GameObject cameraOverlay;
 
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
     private float oldStaminaRegen;
-    private float oldAgentSpeed;
 
     void Update()
     {
@@ -28,7 +28,6 @@ public class GameStateManager : MonoBehaviour
         }
         if (player.GetComponent<StaminaManager>().maxCap == 0)
         {
-            agent.GetComponent<MonsterStateManager>().caughtPlayer = false;
             uiManager.ShowLoseScreen();
             PauseGameObjects();
         }
@@ -47,7 +46,8 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInputHandler>().enabled = true;
         player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
-        agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = oldAgentSpeed;
+        monsters.GetComponent<MonsterManager>().TogglePause();
+        cameraOverlay.GetComponent<UICameraOverlay>().TogglePause();
     }
 
     public void PauseGameObjects()
@@ -57,7 +57,8 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
         (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
-        (oldAgentSpeed, agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed) = (agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed, 0f);
+        monsters.GetComponent<MonsterManager>().TogglePause();
+        cameraOverlay.GetComponent<UICameraOverlay>().TogglePause();
     }
 
     public void ResetGameObjects()
