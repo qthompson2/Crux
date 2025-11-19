@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using VolFx;
 using System.Collections;
 
 public class MonsterStateManager : MonoBehaviour
@@ -7,10 +9,12 @@ public class MonsterStateManager : MonoBehaviour
     [SerializeField] public Transform player;
     [SerializeField] public Transform target;
     [SerializeField] public AgentController agentController;
+    [SerializeField] public VhsVol vhsEffect;
 
     [Header("Monster Chase Settings")]
     [SerializeField] public float chaseDuration = 10f;
     [SerializeField] public float reachThreshold = 2f;
+    [SerializeField] public float alertThreshold = 25f;
 
     [Header("Monster Lurk Settings")]
     [SerializeField] public float visionDistance = 50f;
@@ -49,8 +53,13 @@ public class MonsterStateManager : MonoBehaviour
     {
         agentController = GetComponent<AgentController>();
         lurkingState = new LurkingState(visionDistance, horizontalSweepSpeed, verticalRayCount, verticalAngleRange, lurkAngleRange, lurkDuration, minLurkDistance, maxLurkDistance, reachThreshold, maxLurkTime, chaseDistanceThreshold);
-        chasingState = new ChasingState(chaseDuration,  reachThreshold);
+        chasingState = new ChasingState(chaseDuration, alertThreshold, reachThreshold);
         fleeingState = new FleeingState(minFleeDistance, maxFleeDistance, fleeDuration);
+        Volume volume = GameObject.FindGameObjectWithTag("PostProcess").GetComponent<Volume>();
+        if (volume != null)
+        {
+            volume.profile.TryGet<VhsVol>(out vhsEffect);
+        }
     }
 
     void Start()
@@ -135,6 +144,23 @@ public class MonsterStateManager : MonoBehaviour
         Debug.Log($"Random target set to {target.position}");
     }
 
+    public void EnableChaseEffect()
+    {
+        Debug.Log("Enabling Chase VHS Effect");
+        vhsEffect._weight.value = 1f;
+    }
+
+    public void DisableChaseEffect()
+    {
+        Invoke(nameof(DisableChaseEffect_Internal), 1.5f);
+    }
+
+    private void DisableChaseEffect_Internal()
+    {
+        vhsEffect._weight.value = 0.175f;
+        Debug.Log("Chase VHS Effect disabled");
+    }
+
     private void OnDrawGizmos()
     {
         if (!gizmoShowVision || currentState != lurkingState)
@@ -155,5 +181,7 @@ public class MonsterStateManager : MonoBehaviour
             Gizmos.DrawLine(origin, origin + rayDir * gizmoVisionDistance);
         }
     }
+
+
 
 }
