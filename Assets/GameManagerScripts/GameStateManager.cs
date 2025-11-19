@@ -24,7 +24,7 @@ public class GameStateManager : MonoBehaviour
                 PauseGameObjects();
             }
         }
-        if (agent.GetComponent<MonsterStateManager>().caughtPlayer)
+        if (player.GetComponent<StaminaManager>().maxCap == 0)
         {
             agent.GetComponent<MonsterStateManager>().caughtPlayer = false;
             uiManager.ShowLoseScreen();
