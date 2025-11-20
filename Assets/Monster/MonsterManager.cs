@@ -57,6 +57,22 @@ public class MonsterManager : MonoBehaviour
         hasActivated = true;
 	}
 
+    public void Pause()
+	{
+		if (!isPaused)
+		{
+			TogglePause();
+		}
+	}
+
+    public void Resume()
+	{
+		if (isPaused)
+		{
+			TogglePause();
+		}
+	}
+
     public void TogglePause()
 	{
 		if (hasActivated)
