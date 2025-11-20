@@ -10,8 +10,22 @@ public class GameStateManager : MonoBehaviour
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
     private float oldStaminaRegen;
+    private int hasShownControls;
 
-    void Update()
+	void Start()
+	{
+		hasShownControls = PlayerPrefs.GetInt("hasShownControls", 0);
+
+        if (hasShownControls == 0)
+		{
+            PauseGameObjects();
+            uiManager.helpScreen.GetComponent<HelpScreenController>().SetReturnButtonText("Continue");
+            uiManager.helpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(delegate () { uiManager.HideCurrentScreen(); ResumeGameObjects(); uiManager.helpScreen.GetComponent<HelpScreenController>().ResetReturnButtonText(); });
+			uiManager.ShowHelpScreen();
+            PlayerPrefs.SetInt("hasShownControls", 1);
+		}
+	}
+	void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {

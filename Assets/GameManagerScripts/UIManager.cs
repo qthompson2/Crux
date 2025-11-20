@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public GameObject pauseMenuScreen;
     [SerializeField] public GameObject winScreen;
     [SerializeField] public GameObject loseScreen;
-    [SerializeField] private GameObject helpScreen;
+    [SerializeField] public GameObject helpScreen;
     [SerializeField] private GameObject fadeOutPanel;
     private Image panelImage;
     private GameObject currentScreen;

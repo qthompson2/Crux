@@ -86,4 +86,14 @@ public class HelpScreenController : MonoBehaviour
 	{
 		ReturnButton.onClick.AddListener(new(action));
 	}
+
+    public void SetReturnButtonText(string s)
+	{
+		ReturnButton.GetComponentInChildren<TMP_Text>().text = s;
+	}
+
+    public void ResetReturnButtonText()
+	{
+		ReturnButton.GetComponentInChildren<TMP_Text>().text = "Return";
+	}
 }

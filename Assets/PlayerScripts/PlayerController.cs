@@ -274,7 +274,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("IsGrounded: " + IsGrounded);
         LookUpdate(playerStateManager);
         GravityUpdate(playerStateManager);
     }
