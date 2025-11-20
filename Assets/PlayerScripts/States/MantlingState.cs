@@ -27,4 +27,9 @@ public class MantlingState : PlayerBaseState
             player.SwitchState(player.idleState);
         }
     }
+
+    public override void ExitState(PlayerStateManager player)
+    {
+        player.controller.ResetRotation();
+    }
 }
