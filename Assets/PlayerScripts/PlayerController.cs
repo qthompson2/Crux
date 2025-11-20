@@ -59,19 +59,66 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            Vector3 origin = transform.position + Vector3.up * 0.1f; // small lift
-            float radius = 0.45f;
-            float distance = groundDetectionDistance + 0.1f;
-
-            if (Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit hit, distance, groundMask))
-            {
-                float angle = Vector3.Angle(hit.normal, Vector3.up);
-                return angle <= maxWalkableAngle;
-            }
-
-            return false;
+            return CapsuleGroundCheck() || SpherePatternGroundCheck();
         }
     }
+
+    private bool CapsuleGroundCheck()
+    {
+        CharacterController cc = GetComponent<CharacterController>();
+        float radius = cc.radius;
+        float height = cc.height;
+
+        // Capsule endpoints
+        Vector3 top = transform.position + Vector3.up * (height / 2f - radius);
+        Vector3 bottom = transform.position + Vector3.up * radius;
+
+        float distance = groundDetectionDistance;
+
+        if (Physics.CapsuleCast(top, bottom, radius, Vector3.down, out RaycastHit hit, distance, groundMask))
+        {
+            float angle = Vector3.Angle(hit.normal, Vector3.up);
+            return angle <= maxWalkableAngle;
+        }
+
+        return false;
+    }
+
+    private bool SpherePatternGroundCheck()
+    {
+        float radius = 0.45f;
+        float distance = groundDetectionDistance + 0.1f;
+
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
+
+        // 5-point pattern: center + cardinal directions
+        Vector3[] offsets =
+        {
+            Vector3.zero,
+            Vector3.forward * 0.15f,
+            Vector3.back * 0.15f,
+            Vector3.left * 0.15f,
+            Vector3.right * 0.15f
+        };
+
+        foreach (var off in offsets)
+        {
+            Vector3 castOrigin = origin + off;
+
+            if (Physics.SphereCast(castOrigin, radius, Vector3.down, out RaycastHit hit, distance, groundMask))
+            {
+                float angle = Vector3.Angle(hit.normal, Vector3.up);
+
+                // If ANY cast is walkable surface → grounded
+                if (angle <= maxWalkableAngle)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+
 
     public bool CanClimb {
         get {
@@ -227,6 +274,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("IsGrounded: " + IsGrounded);
         LookUpdate(playerStateManager);
         GravityUpdate(playerStateManager);
     }
