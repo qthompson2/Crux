@@ -66,4 +66,20 @@ public class UICameraOverlay : MonoBehaviour
 	{
 		isPaused = !isPaused;
 	}
+
+    public void Pause()
+	{
+		if (!isPaused)
+		{
+			TogglePause();
+		}
+	}
+
+    public void Resume()
+	{
+		if (isPaused)
+		{
+			TogglePause();
+		}
+	}
 }

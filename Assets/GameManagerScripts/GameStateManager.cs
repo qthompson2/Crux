@@ -47,7 +47,7 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerInputHandler>().enabled = true;
         player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
         monsters.GetComponent<MonsterManager>().Resume();
-        cameraOverlay.GetComponent<UICameraOverlay>().TogglePause();
+        cameraOverlay.GetComponent<UICameraOverlay>().Resume();
     }
 
     public void PauseGameObjects()
@@ -58,7 +58,7 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerInputHandler>().enabled = false;
         (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
         monsters.GetComponent<MonsterManager>().Pause();
-        cameraOverlay.GetComponent<UICameraOverlay>().TogglePause();
+        cameraOverlay.GetComponent<UICameraOverlay>().Pause();
     }
 
     public void ResetGameObjects()

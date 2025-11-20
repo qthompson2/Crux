@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,6 @@ public class HelpScreenController : MonoBehaviour
 		ShowMovementControls();
         NextButton.onClick.AddListener(OnNextButtonPressed);
         PrevButton.onClick.AddListener(OnPrevButtonPressed);
-        ReturnButton.onClick.AddListener(OnReturnButtonPressed);
 	}
 
     private void ShowMovementControls()
@@ -82,8 +82,8 @@ public class HelpScreenController : MonoBehaviour
 		}
 	}
 
-    public void OnReturnButtonPressed()
+    public void SetReturnButtonOnPress(Action action)
 	{
-		gameObject.SetActive(false);
+		ReturnButton.onClick.AddListener(new(action));
 	}
 }

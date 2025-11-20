@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +10,15 @@ public class PausedScreenController : MonoBehaviour
     [SerializeField] private TMP_Text PlayBackTime;
     [SerializeField] private Button HelpButton;
     [SerializeField] private GameObject HelpScreen;
+	[SerializeField] private string ScreenName;
     private UICameraOverlay CameraOverlay;
+	private UIManager UI;
 
 	void Start()
 	{
 		HelpButton.onClick.AddListener(OnHelpButtonPressed);
         CameraOverlay = CameraOverlayObject.GetComponent<UICameraOverlay>();
+		UI = GameObject.Find("GameManager").GetComponent<UIManager>();
 	}
 
 	void Update()
@@ -26,6 +30,14 @@ public class PausedScreenController : MonoBehaviour
 
 	public void OnHelpButtonPressed()
 	{
-		HelpScreen.SetActive(true);
+		if (ScreenName == "Pause")
+		{
+			HelpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(UI.ShowPauseMenu);
+		}
+		else if (ScreenName == "Lose")
+		{
+			HelpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(UI.ShowLoseScreen);
+		}
+		UI.ShowHelpScreen();
 	}
 }

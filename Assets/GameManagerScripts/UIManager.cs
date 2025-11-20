@@ -4,10 +4,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("UI Screens")]
+	private static readonly WaitForSeconds _waitForSeconds0_01 = new(0.01f);
+	[Header("UI Screens")]
     [SerializeField] public GameObject pauseMenuScreen;
     [SerializeField] public GameObject winScreen;
     [SerializeField] public GameObject loseScreen;
+    [SerializeField] private GameObject helpScreen;
     [SerializeField] private GameObject fadeOutPanel;
     private Image panelImage;
     private GameObject currentScreen;
@@ -43,6 +45,11 @@ public class UIManager : MonoBehaviour
         ShowScreen(loseScreen);
     }
 
+    public void ShowHelpScreen()
+	{
+		ShowScreen(helpScreen);
+	}
+
     public void HideCurrentScreen()
     {
         if (currentScreen != null)
@@ -62,7 +69,7 @@ public class UIManager : MonoBehaviour
         while (panelImage.color.a < 1)
         {
 			panelImage.color = new(panelImage.color.r, panelImage.color.g, panelImage.color.b, panelImage.color.a + 0.01f);
-            yield return new WaitForSeconds(0.01f);
+            yield return _waitForSeconds0_01;
         }
 
         ShowScreen(screen);
