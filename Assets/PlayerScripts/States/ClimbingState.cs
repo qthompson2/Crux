@@ -1,13 +1,14 @@
 using UnityEngine;
 
-public class ClimbingState : BaseState
+public class ClimbingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {
+        player.staminaManager.DrainOverTime(player.staminaManager.climbCost);
         float sampleDistance = player.controller.sampleDistance;
         float stickDistance = player.controller.stickDistance;
         float stickLerp = player.controller.stickLerp;
-        if (!player.inputHandler.ClimbHeld)
+        if (!player.inputHandler.ClimbHeld || !player.staminaManager.HasStamina())
         {
             player.SwitchState(player.fallingState);
             return;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdleState : BaseState
+public class IdleState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {
@@ -13,7 +13,7 @@ public class IdleState : BaseState
             return;
         }
 
-        if (player.inputHandler.SprintHeld)
+        if (player.inputHandler.SprintHeld )
         {
             player.SwitchState(player.sprintingState);
             return;
@@ -25,7 +25,7 @@ public class IdleState : BaseState
             return;
         }
 
-        if (player.inputHandler.JumpPressed && player.controller.IsGrounded)
+        if (player.inputHandler.JumpPressed && player.controller.IsGrounded && player.staminaManager.LabourousActionAllowed())
         {
             player.controller.Jump();
             player.SwitchState(player.jumpingState);
@@ -38,7 +38,7 @@ public class IdleState : BaseState
             return;
         }
         
-        if (player.inputHandler.ClimbHeld && player.controller.CanClimb)
+        if (player.inputHandler.ClimbHeld && player.controller.CanClimb && player.staminaManager.LabourousActionAllowed())
         {
             player.SwitchState(player.climbingState);
             return;

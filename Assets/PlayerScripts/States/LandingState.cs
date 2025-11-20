@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LandingState : BaseState
+public class LandingState : PlayerBaseState
 {
     public override void UpdateState(PlayerStateManager player)
     {
@@ -19,6 +19,19 @@ public class LandingState : BaseState
         else
         {
             player.SwitchState(player.idleState);
+        }
+    }
+    public override void EnterState(PlayerStateManager player)
+    {
+        player.controller.ResetRotation();
+        player.controller.StoredJumpMomentum = Vector3.zero;
+        StaminaManager staminaManager = player.staminaManager;
+        if (staminaManager != null)
+        {
+            staminaManager.end_height = player.transform.position.y;
+            staminaManager.end_time = Time.time;
+
+            staminaManager.checkFallDamage();
         }
     }
 }

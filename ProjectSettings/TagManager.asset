@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - PostProcess
   layers:
   - Default
   - TransparentFX
@@ -11,10 +12,10 @@ TagManager:
   - Terrain
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - PostProcess
+  - Item
+  - Player
+  - Probe
   - 
   - 
   - 

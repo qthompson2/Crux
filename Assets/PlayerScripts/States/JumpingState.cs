@@ -1,23 +1,25 @@
 using UnityEngine;
 
-public class JumpingState : BaseState
+public class JumpingState : PlayerBaseState
 {
     public override void EnterState(PlayerStateManager player)
     {
         if (player.controller.IsGrounded)
         {
+            // Turn off probe so FallingState reactivates it correctly
+            player.controller.probe.Deactivate();
+
+            // Capture current horizontal momentum BEFORE the jump impulse
+            player.controller.StoredJumpMomentum = player.controller.LastGroundedMove;
+
+            // Vertical part of jump
             player.controller.Jump();
+
+            // Stamina cost
+            player.staminaManager.DrainStamina(player.staminaManager.jumpCost);
         }
-    }
 
-    public override void UpdateState(PlayerStateManager player)
-    {
-        Vector2 input = player.inputHandler.MoveInput;
-        Vector3 move = player.transform.right * input.x + player.transform.forward * input.y;
-        player.controller.Move(move);
-        player.controller.Jump();
-
-        // ---- Handle Transitions ----
+        // Immediately switch to Falling
         player.SwitchState(player.fallingState);
     }
 }

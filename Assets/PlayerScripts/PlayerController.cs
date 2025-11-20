@@ -8,8 +8,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Move Settings")]
     [SerializeField] public float walkSpeed = 5.0f;
-    [SerializeField] public float sprintSpeedMultiplier = 1.5f;
+    [SerializeField] public float sprintSpeedMultiplier = 3f;
     [SerializeField] public float jumpForce = 1.5f;
+    public Vector3 StoredJumpMomentum;
+    public Vector3 LastGroundedMove;
     private Vector3 velocity;
 
     [Header ("Climbing Settings")]
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float climbSpeedMultiplier = 0.6f;
     [SerializeField] public float maxClimbingRotationAngle = 60f;
     [SerializeField] public float climbDetectionDistance = 1.5f;
+    [SerializeField] public float mantlableSurfaceAngle = 0.9f;
     [SerializeField] public float sampleDistance = 1.0f;
     [SerializeField] public float stickDistance = 0.12f;
     [SerializeField] public float stickLerp = 8f;
@@ -32,6 +35,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public int requiredValidHits = 3;
     [SerializeField] public float maxWalkableAngle = 45f;
     [SerializeField] public float lateralCheckDistance = 1f;
+    [SerializeField] public FallProbe probe;
+    [SerializeField] public float airControlSpeed = 6.5f;
 
     [Header ("Character Settings")]
     [SerializeField] public float playerHeight = 2.0f;
@@ -50,16 +55,70 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float maxVerticalAngle = 90f;
     private float pitch = 0f;
 
-    public bool IsGrounded {
-        get {
-            RaycastHit hit;
-            if (Physics.SphereCast(transform.position, 0.5f, Vector3.down, out hit, groundDetectionDistance, groundMask))
-            {
-                return true;
-            }
-            return false;
+    public bool IsGrounded
+    {
+        get
+        {
+            return CapsuleGroundCheck() || SpherePatternGroundCheck();
         }
     }
+
+    private bool CapsuleGroundCheck()
+    {
+        CharacterController cc = GetComponent<CharacterController>();
+        float radius = cc.radius;
+        float height = cc.height;
+
+        // Capsule endpoints
+        Vector3 top = transform.position + Vector3.up * (height / 2f - radius);
+        Vector3 bottom = transform.position + Vector3.up * radius;
+
+        float distance = groundDetectionDistance;
+
+        if (Physics.CapsuleCast(top, bottom, radius, Vector3.down, out RaycastHit hit, distance, groundMask))
+        {
+            float angle = Vector3.Angle(hit.normal, Vector3.up);
+            return angle <= maxWalkableAngle;
+        }
+
+        return false;
+    }
+
+    private bool SpherePatternGroundCheck()
+    {
+        float radius = 0.45f;
+        float distance = groundDetectionDistance + 0.1f;
+
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
+
+        // 5-point pattern: center + cardinal directions
+        Vector3[] offsets =
+        {
+            Vector3.zero,
+            Vector3.forward * 0.15f,
+            Vector3.back * 0.15f,
+            Vector3.left * 0.15f,
+            Vector3.right * 0.15f
+        };
+
+        foreach (var off in offsets)
+        {
+            Vector3 castOrigin = origin + off;
+
+            if (Physics.SphereCast(castOrigin, radius, Vector3.down, out RaycastHit hit, distance, groundMask))
+            {
+                float angle = Vector3.Angle(hit.normal, Vector3.up);
+
+                // If ANY cast is walkable surface → grounded
+                if (angle <= maxWalkableAngle)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+
 
     public bool CanClimb {
         get {
@@ -74,8 +133,14 @@ public class PlayerController : MonoBehaviour
 
     public bool CanMantle {
         get {
-            // Implement mantle check logic here
-            return false;
+			if (Physics.SphereCast(transform.position, 0.5f, transform.forward, out RaycastHit hit, climbDetectionDistance, groundMask))
+			{
+				if (Vector3.Dot(hit.normal, Vector3.up) > mantlableSurfaceAngle)
+				{
+					return true;
+				}
+			}
+			return false;
         }
     }
 
@@ -98,21 +163,22 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 move) {
         CharacterController cc = GetComponent<CharacterController>();
+
         float speedMultiplier = 1.0f;
-        if (playerStateManager.currentState is ClimbingState) {
-            speedMultiplier = climbSpeedMultiplier;
-        }
-        if (playerStateManager.currentState is SprintingState) {
-            speedMultiplier = sprintSpeedMultiplier;
-        }
-        if (playerStateManager.currentState is SlidingState) {
-            speedMultiplier = slideSpeedMultiplier;
-        }
-        if (playerStateManager.currentState is CrouchingState) {
-            speedMultiplier = crouchSpeedMultiplier;
-        }
-        cc.Move(move * Time.deltaTime * walkSpeed * speedMultiplier);
+        if (playerStateManager.currentState is ClimbingState) speedMultiplier = climbSpeedMultiplier;
+        if (playerStateManager.currentState is SprintingState) speedMultiplier = sprintSpeedMultiplier;
+        if (playerStateManager.currentState is SlidingState) speedMultiplier = slideSpeedMultiplier;
+        if (playerStateManager.currentState is CrouchingState) speedMultiplier = crouchSpeedMultiplier;
+
+        Vector3 finalMove = move * walkSpeed * speedMultiplier;
+
+        // Capture grounded motion for later use in jump
+        if (IsGrounded && finalMove.sqrMagnitude > 0.0001f)
+            LastGroundedMove = finalMove;   // finalMove already includes speed multipliers
+
+        cc.Move(finalMove * Time.deltaTime);
     }
+
 
     public void Jump() {
         if (IsGrounded) {
@@ -147,6 +213,8 @@ public class PlayerController : MonoBehaviour
         {
             playerStateManager = GetComponent<PlayerStateManager>();
         }
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetHeight(float heightMultiplier) {
@@ -185,7 +253,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         if (IsGrounded && velocity.y < 0) {
-            velocity.y = -2f;
+            velocity.y = -9.81f;
         } else {
             velocity.y += gravity * Time.deltaTime;
         }

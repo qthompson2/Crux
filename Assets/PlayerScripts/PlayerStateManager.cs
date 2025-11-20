@@ -5,10 +5,12 @@ public class PlayerStateManager : MonoBehaviour
     [Header("References")]
     public PlayerController controller;
     public PlayerInputHandler inputHandler;
+    public StaminaManager staminaManager;
     public Transform cameraTransform;
+    public Animator playerAnimator;
 
     [Header("Current State")]
-    public BaseState currentState;
+    public PlayerBaseState currentState;
 
     // References to all available states
     public IdleState idleState = new IdleState();
@@ -30,28 +32,30 @@ public class PlayerStateManager : MonoBehaviour
 
     void Start()
     {
-        SwitchState(idleState);
+        currentState = idleState;
+        playerAnimator?.SetBool(currentState.GetType().Name, true);
     }
 
     void Update()
     {
+        //Debug.Log("Current Stamina: " + staminaManager.currentStamina);
         if (currentState != null)
+        {
             currentState?.UpdateState(this);
+            playerAnimator?.SetFloat("Y", inputHandler.MoveInput.y);
+        }
     }
 
-    void FixedUpdate()
-    {
-        currentState?.FixedUpdateState(this);
-    }
-
-    public void SwitchState(BaseState newState)
+    public void SwitchState(PlayerBaseState newState)
     {
         if (currentState == newState)
             return;
 
         currentState?.ExitState(this);
+        playerAnimator?.SetBool(currentState.GetType().Name, false);
         currentState = newState;
         Debug.Log("Player State switched to: " + currentState.GetType().Name);
         currentState?.EnterState(this);
+        playerAnimator?.SetBool(currentState.GetType().Name, true);
     }
 }

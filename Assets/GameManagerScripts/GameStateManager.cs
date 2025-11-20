@@ -4,16 +4,28 @@ public class GameStateManager : MonoBehaviour
 {
     [Header("Game Objects")]
     [SerializeField] public GameObject player;
-    [SerializeField] public GameObject agent;
-
-    [Header("Start Positions")]
-    [SerializeField] private Vector3 playerStartPosition;
-    [SerializeField] private Vector3 agentStartPosition;
+    [SerializeField] private GameObject monsters;
+    [SerializeField] private GameObject cameraOverlay;
 
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
+    private float oldStaminaRegen;
+    private int hasShownControls;
 
-    void Update()
+	void Start()
+	{
+		hasShownControls = PlayerPrefs.GetInt("hasShownControls", 0);
+
+        if (hasShownControls == 0)
+		{
+            PauseGameObjects();
+            uiManager.helpScreen.GetComponent<HelpScreenController>().SetReturnButtonText("Continue");
+            uiManager.helpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(delegate () { uiManager.HideCurrentScreen(); ResumeGameObjects(); uiManager.helpScreen.GetComponent<HelpScreenController>().ResetReturnButtonText(); });
+			uiManager.ShowHelpScreen();
+            PlayerPrefs.SetInt("hasShownControls", 1);
+		}
+	}
+	void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -28,9 +40,8 @@ public class GameStateManager : MonoBehaviour
                 PauseGameObjects();
             }
         }
-        if (agent.GetComponent<MonsterStateManager>().caughtPlayer)
+        if (player.GetComponent<StaminaManager>().maxCap == 0)
         {
-            agent.GetComponent<MonsterStateManager>().caughtPlayer = false;
             uiManager.ShowLoseScreen();
             PauseGameObjects();
         }
@@ -43,33 +54,29 @@ public class GameStateManager : MonoBehaviour
 
     public void ResumeGameObjects()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         uiManager.HideCurrentScreen();
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInputHandler>().enabled = true;
-        agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10f;
+        player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
+        monsters.GetComponent<MonsterManager>().Resume();
+        cameraOverlay.GetComponent<UICameraOverlay>().Resume();
     }
 
     public void PauseGameObjects()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
-        agent.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 0f;
+        (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
+        monsters.GetComponent<MonsterManager>().Pause();
+        cameraOverlay.GetComponent<UICameraOverlay>().Pause();
     }
 
     public void ResetGameObjects()
     {
-        if (player != null)
-        {
-            player.transform.position = playerStartPosition;
-            player.transform.rotation = Quaternion.identity;
-        }
-
-        if (agent != null)
-        {
-            agent.transform.position = agentStartPosition;
-            agent.transform.rotation = Quaternion.identity;
-        }
-        uiManager.HideCurrentScreen();
-        ResumeGameObjects();
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
