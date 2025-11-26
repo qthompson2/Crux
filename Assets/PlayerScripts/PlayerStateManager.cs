@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerStateManager : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerInputHandler inputHandler;
     public StaminaManager staminaManager;
     public Transform cameraTransform;
-    public Animator playerAnimator;
+    public List<Animator> playerAnimators;
 
     [Header("Current State")]
     public PlayerBaseState currentState;
@@ -33,7 +34,7 @@ public class PlayerStateManager : MonoBehaviour
     void Start()
     {
         currentState = idleState;
-        playerAnimator?.SetBool(currentState.GetType().Name, true);
+        UpdateAnimatorState(currentState.GetType().Name, true);
     }
 
     void Update()
@@ -42,7 +43,7 @@ public class PlayerStateManager : MonoBehaviour
         if (currentState != null)
         {
             currentState?.UpdateState(this);
-            playerAnimator?.SetFloat("Y", inputHandler.MoveInput.y);
+            UpdateAnimatorFloat("Y", inputHandler.MoveInput.y);
         }
     }
 
@@ -52,10 +53,26 @@ public class PlayerStateManager : MonoBehaviour
             return;
 
         currentState?.ExitState(this);
-        playerAnimator?.SetBool(currentState.GetType().Name, false);
+        UpdateAnimatorState(currentState.GetType().Name, false);
         currentState = newState;
         Debug.Log("Player State switched to: " + currentState.GetType().Name);
         currentState?.EnterState(this);
-        playerAnimator?.SetBool(currentState.GetType().Name, true);
+        UpdateAnimatorState(currentState.GetType().Name, true);
+    }
+
+    void UpdateAnimatorState(string state, bool enable)
+    {
+        foreach (Animator anim in playerAnimators)
+        {
+            anim?.SetBool(state, enable);
+        }
+    }
+
+    void UpdateAnimatorFloat(string floatName, float value)
+    {
+        foreach (Animator anim in playerAnimators)
+        {
+            anim?.SetFloat(floatName, value);
+        }
     }
 }
