@@ -93,6 +93,7 @@ public class StaminaManager : MonoBehaviour
                 // Effect wore off, return to normal
                 stimRegenMultiplier = 1f;
                 Debug.Log("Stim Shot effect expired.");
+                //End effect
             }
         }
     }
@@ -107,6 +108,7 @@ public class StaminaManager : MonoBehaviour
         stimTimer = duration;
 
         Debug.Log($"Stim Applied! +{instantAmount} Stamina, {multiplier}x Regen for {duration}s");
+        // Do post processing
     }
     // -------------------------------
     // Stamina Actions
