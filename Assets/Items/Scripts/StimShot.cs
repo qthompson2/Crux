@@ -7,7 +7,6 @@ public class StimShot : ItemClass
     [SerializeField] private float buffDuration = 10f;     // Lasts 10 seconds
 
 
-    
 
     private void Awake()
     {
