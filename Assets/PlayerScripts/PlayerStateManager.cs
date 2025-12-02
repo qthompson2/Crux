@@ -43,7 +43,8 @@ public class PlayerStateManager : MonoBehaviour
         if (currentState != null)
         {
             currentState?.UpdateState(this);
-            UpdateAnimatorFloat("Y", inputHandler.MoveInput.y);
+            float animationMultiplier = Mathf.Clamp(Mathf.Abs(inputHandler.MoveInput.y) + Mathf.Abs(inputHandler.MoveInput.x), 0.0f, 1.0f); // use abs so negative x and positive y don't cancel each other out
+            UpdateAnimatorFloat("AnimationMultiplier", animationMultiplier * Mathf.Sign(inputHandler.MoveInput.y)); // get original sign of y to play animation depending on if y is + 0r -
         }
     }
 
