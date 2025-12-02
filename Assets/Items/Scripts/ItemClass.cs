@@ -8,10 +8,12 @@ public abstract class ItemClass : MonoBehaviour
     [SerializeField, Range(0f, 1f)] public float weight = 0.1f;
     [SerializeField] public float useTime = 1f;
     [SerializeField] public Sprite itemIcon;
+    [SerializeField] protected bool destroyOnUse = true;
 
     protected StaminaManager staminaManager;
     protected UseIndicatorUI useIndicator;
     protected InventoryManager ItemManager;
+    protected Camera playerCamera;
 
     private bool isBeingUsed = false;
     private Coroutine useRoutine;
@@ -64,9 +66,12 @@ public abstract class ItemClass : MonoBehaviour
         useIndicator?.ResetProgress();
 
         Use();
-        ItemManager.weightPenalty -= weight;
-        Destroy(gameObject);
-        ItemManager.ClearItem();
+        if (destroyOnUse)
+        {
+            ItemManager.weightPenalty -= weight;
+            Destroy(gameObject);
+            ItemManager.ClearItem();
+        }
         Debug.Log($"{itemName} use complete!");
     }
 
@@ -78,7 +83,7 @@ public abstract class ItemClass : MonoBehaviour
     /// <summary>
     /// Called when the item is picked up; assigns references and disables world object.
     /// </summary>
-    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef, InventoryManager ItemManagerRef)
+    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef, InventoryManager ItemManagerRef, Camera cameraRef)
     {
         Debug.Log($"{itemName} was picked up.");
 
@@ -97,6 +102,7 @@ public abstract class ItemClass : MonoBehaviour
         staminaManager = staminaManagerRef;
         useIndicator = useIndicatorRef;
         ItemManager = ItemManagerRef;
+        playerCamera = cameraRef;
     }
 
 
