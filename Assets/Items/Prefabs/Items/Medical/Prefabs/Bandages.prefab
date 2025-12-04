@@ -136,7 +136,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &5457698219048864833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,4 +153,5 @@ MonoBehaviour:
   weight: 0.05
   useTime: 1
   itemIcon: {fileID: 21300000, guid: a58858b3b12a48948a920045fbf0ffb0, type: 3}
+  destroyOnUse: 1
   healAmount: 0.1
