@@ -17,6 +17,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private LayerMask itemLayerMask;
     [SerializeField] private StaminaManager staminaManager;
     [SerializeField] private InventoryUIManager inventoryUIManager;
+    [SerializeField] private PlayerStateManager playerstateManager;
 
     [Header("UI References")]
     [SerializeField] private UseIndicatorUI useIndicator;
@@ -26,6 +27,7 @@ public class InventoryManager : MonoBehaviour
 
     public ItemClass currentItem { get; private set; }
     private int currentSlotIndex = -1;
+    private PlayerBaseState currentstate;
     public int MaxSlots => maxSlots;
     private void Awake()
     {
@@ -53,6 +55,8 @@ public class InventoryManager : MonoBehaviour
     private void OnDisable() => inputActions.Disable();
     private void Update()
     {
+        //Update Current State
+        currentstate = playerstateManager.currentState;
         // Don't do anything if the prompt UI isn't assigned
         if (lookAtPrompt == null || playerCamera == null)
             return;
@@ -243,7 +247,7 @@ public class InventoryManager : MonoBehaviour
         bool added = AddItem(item);
         if (added)
         {
-            item.OnPickedUp(staminaManager, useIndicator, this);
+            item.OnPickedUp(staminaManager, useIndicator, this, playerCamera);
             weightPenalty += item.weight;
         }
         else
@@ -256,13 +260,16 @@ public class InventoryManager : MonoBehaviour
 
     public void UseCurrentItem()
     {
-        if (currentItem == null)
-        {
-            Debug.Log("No item selected to use.");
-            return;
-        }
+        if (currentstate is not ClimbingState)
+        { 
+            if (currentItem == null)
+            {
+                Debug.Log("No item selected to use.");
+                return;
+            }
 
-        currentItem.BeginUse();
+            currentItem.BeginUse();
+        }
     }
     public void ClearItem()
     {
