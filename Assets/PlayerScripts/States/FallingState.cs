@@ -56,7 +56,6 @@ public class FallingState : PlayerBaseState
         // either check if the IsGrounded flag is true, or if the probe has hit the ground, stopped moving
         if (grounded || ((probeHitGround || probeStopped) && closeEnough))
         {
-            Debug.Log("EXITING FALLING STATE (definitive)");
             player.SwitchState(player.landingState);
             return;
         }
