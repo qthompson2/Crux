@@ -42,7 +42,6 @@ public class FleeingState : MonsterBaseState
 
         if (fleeTimer >= fleeDuration)
         {
-            Debug.Log("Flee duration over — switching to Lurk State");
             monster.SwitchState(monster.lurkingState);
         }
     }

@@ -92,7 +92,6 @@ public class StaminaManager : MonoBehaviour
             {
                 // Effect wore off, return to normal
                 stimRegenMultiplier = 1f;
-                Debug.Log("Stim Shot effect expired.");
                 //End effect
             }
         }
@@ -106,8 +105,6 @@ public class StaminaManager : MonoBehaviour
         // 2. Start the Rapid Regen
         stimRegenMultiplier = multiplier;
         stimTimer = duration;
-
-        Debug.Log($"Stim Applied! +{instantAmount} Stamina, {multiplier}x Regen for {duration}s");
         // Do post processing
     }
     // -------------------------------
@@ -172,8 +169,6 @@ public class StaminaManager : MonoBehaviour
 
 
         takeFallDamage(totalDamage);
-
-        Debug.Log($"💥 Fall Damage: {totalDamage * 100f:F1}% (fell {fallDistance:F2}m)");
     }
 
     private void takeFallDamage(float damage)

@@ -39,7 +39,6 @@ public class LurkingState : MonsterBaseState
 
     public override void EnterState(MonsterStateManager monster)
     {
-        Debug.Log("Entering Lurk State...");
         elapsed = 0f;
         totalLurkTime = 0f;
         currentAngle = -90f;
@@ -71,14 +70,12 @@ public class LurkingState : MonsterBaseState
         if (Vector3.Distance(monster.transform.position, monster.player.position) < chaseDistanceThreshold)
         {
             totalLurkTime = 0f;
-            Debug.Log("Player too close — switching to Chase!");
             monster.SwitchState(monster.chasingState);
             return;
         }
         if (totalLurkTime >= maxLurkTime)
         {
             totalLurkTime = 0f;
-            Debug.Log("Max Lurk Time exceeded — switching to Chase!");
             monster.SwitchState(monster.chasingState);
             return;
         }
@@ -115,19 +112,12 @@ public class LurkingState : MonsterBaseState
 
             if (Physics.Raycast(origin, rayDir, out RaycastHit hit, visionDistance))
             {
-                Debug.DrawRay(origin, rayDir * hit.distance, Color.red, 0.05f);
-
                 if (hit.collider.CompareTag("Player"))
                 {
-                    Debug.Log($"Player detected during Lurking — switching to Chase! ({hit.collider.name})");
                     monster.playerInSight = true;
                     monster.SwitchState(monster.chasingState);
                     return;
                 }
-            }
-            else
-            {
-                Debug.DrawRay(origin, rayDir * visionDistance, Color.yellow, 0.05f);
             }
         }
 
@@ -140,7 +130,6 @@ public class LurkingState : MonsterBaseState
 
             if (timeExpired || reachedTarget)
             {
-                Debug.Log("Repositioning target...");
                 elapsed = 0f;
 
                 float playerDist = Vector3.Distance(

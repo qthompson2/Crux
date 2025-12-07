@@ -39,7 +39,6 @@ public class PlayerStateManager : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log("Current Stamina: " + staminaManager.currentStamina);
         if (currentState != null)
         {
             currentState?.UpdateState(this);
@@ -56,7 +55,6 @@ public class PlayerStateManager : MonoBehaviour
         currentState?.ExitState(this);
         UpdateAnimatorState(currentState.GetType().Name, false);
         currentState = newState;
-        Debug.Log("Player State switched to: " + currentState.GetType().Name);
         currentState?.EnterState(this);
         UpdateAnimatorState(currentState.GetType().Name, true);
     }
