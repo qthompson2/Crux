@@ -54,6 +54,8 @@ public class GameStateManager : MonoBehaviour
 
     public void ResumeGameObjects()
     {
+        AudioListener.pause = false;
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         uiManager.HideCurrentScreen();
@@ -66,6 +68,8 @@ public class GameStateManager : MonoBehaviour
 
     public void PauseGameObjects()
     {
+        AudioListener.pause = true;
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         player.GetComponent<PlayerController>().enabled = false;
