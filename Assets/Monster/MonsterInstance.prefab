@@ -1087,7 +1087,7 @@ MonoBehaviour:
   alertThreshold: 25
   visionDistance: 50
   horizontalSweepSpeed: 60
-  verticalRayCount: 50
+  verticalRayCount: 16
   verticalAngleRange: 60
   lurkAngleRange: 30
   lurkDuration: 6
@@ -1100,7 +1100,7 @@ MonoBehaviour:
   fleeDuration: 8
   caughtPlayer: 0
   gizmoVisionDistance: 50
-  gizmoVerticalRayCount: 50
+  gizmoVerticalRayCount: 16
   gizmoVerticalAngleRange: 60
   gizmoHorizontalAngle: 0
   gizmoShowVision: 1
