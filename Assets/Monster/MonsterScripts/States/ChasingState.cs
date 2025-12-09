@@ -57,11 +57,26 @@ public class ChasingState : MonsterBaseState
         {
             monster.SwitchState(monster.lurkingState);
         }
+
+        if (monster.chaseSounds != null)
+		{
+			if (!monster.chaseSounds.isPlaying)
+			{
+				monster.chaseSounds.Play();
+			}
+		}
     }
 
     public override void ExitState(MonsterStateManager monster)
     {
         monster.caughtPlayer = false;
         monster.DisableChaseEffect();
+        if (monster.chaseSounds != null)
+		{
+			if (!monster.chaseSounds.isPlaying)
+			{
+				monster.chaseSounds.Play();
+			}
+		}
     }
 }

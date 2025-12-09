@@ -15,6 +15,7 @@ public class MonsterStateManager : MonoBehaviour
     [SerializeField] public float chaseDuration = 10f;
     [SerializeField] public float reachThreshold = 2f;
     [SerializeField] public float alertThreshold = 25f;
+    [SerializeField] public AudioSource chaseSounds;
 
     [Header("Monster Lurk Settings")]
     [SerializeField] public float visionDistance = 50f;
