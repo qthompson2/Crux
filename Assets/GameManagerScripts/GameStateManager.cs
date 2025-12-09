@@ -14,6 +14,7 @@ public class GameStateManager : MonoBehaviour
 
 	void Start()
 	{
+        AudioListener.pause = false;
 		hasShownControls = PlayerPrefs.GetInt("hasShownControls", 0);
 
         if (hasShownControls == 0)
