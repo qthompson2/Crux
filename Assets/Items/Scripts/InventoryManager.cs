@@ -106,7 +106,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (item == null)
         {
-            Debug.LogWarning("Attempted to add null item.");
             return false;
         }
 
@@ -115,13 +114,11 @@ public class InventoryManager : MonoBehaviour
             if (slots[i] == null)
             {
                 slots[i] = item;
-                Debug.Log($"Picked up {item.itemName} and added to slot {i + 1}.");
                 SelectSlot(i);
                 UpdateUI();
                 return true;
             }
         }
-        Debug.LogWarning("Inventory full! Could not add item.");
         return false;
     }
 
@@ -133,8 +130,6 @@ public class InventoryManager : MonoBehaviour
 
         if (slots[slotIndex] == null)
             return;
-
-        Debug.Log($"Removed {slots[slotIndex].itemName} from slot {slotIndex + 1}");
 
         if (currentSlotIndex == slotIndex)
         {
@@ -151,12 +146,10 @@ public class InventoryManager : MonoBehaviour
     {
         if (currentItem != null && currentItem.IsBeingUsed)
         {
-            Debug.Log($"Cannot switch items while using {currentItem.itemName}!");
             return; // Abort the slot switch
         }
         if (slotIndex < 0 || slotIndex >= maxSlots)
         {
-            Debug.LogWarning("Invalid slot index selected.");
             currentItem = null;
             currentSlotIndex = -1;
             UpdateUI();
@@ -166,31 +159,13 @@ public class InventoryManager : MonoBehaviour
         currentItem = slots[slotIndex];
         currentSlotIndex = slotIndex;
 
-        if (currentItem != null)
-            Debug.Log($"Selected slot {slotIndex + 1}: {currentItem.itemName}");
-        else
-            Debug.Log($"Slot {slotIndex + 1} is empty.");
-
         UpdateUI();
-    }
-
-    public void PrintInventory()
-    {
-        Debug.Log("Current inventory:");
-        for (int i = 0; i < slots.Length; i++)
-        {
-            Debug.Log(slots[i] != null
-                ? $"Slot {i + 1}: {slots[i].itemName}"
-                : $"Slot {i + 1}: empty");
-        }
     }
 
     private void UpdateUI()
     {
         if (inventoryUIManager != null)
             inventoryUIManager.UpdateInventoryUI(slots, currentSlotIndex);
-        else
-            Debug.LogWarning("InventoryUIManager reference not set!");
     }
 
     // === PICKUP LOGIC ===
@@ -199,7 +174,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (playerCamera == null)
         {
-            Debug.LogWarning("No player camera assigned!");
             return;
         }
 
@@ -218,21 +192,10 @@ public class InventoryManager : MonoBehaviour
             {
                 if (!(staminaManager.maxCap - item.weight * 100 > 0f))
                 {
-                    Debug.LogWarning($"Cannot pick up {item.itemName}. Item is too heavy!");
                     return; // Stop the pickup
                 }
-                Debug.Log($"[Raycast] Found item '{item.itemName}' to pick up at {hit.point}.");
                 PickUpItem(item);
             }
-            else
-            {
-                Debug.Log($"[Raycast] Hit non-item object: {hit.collider.name}");
-            }
-        }
-        else
-        {
-            Debug.DrawRay(ray.origin, ray.direction * pickupRange, Color.red, 0.25f);
-            Debug.Log("No item found within pickup range.");
         }
     }
 
@@ -240,7 +203,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (item == null)
         {
-            Debug.LogWarning("Attempted to pick up a null item.");
             return;
         }
 
@@ -249,10 +211,6 @@ public class InventoryManager : MonoBehaviour
         {
             item.OnPickedUp(staminaManager, useIndicator, this, playerCamera);
             weightPenalty += item.weight;
-        }
-        else
-        {
-            Debug.LogWarning($"Failed to add item {item.itemName} to inventory.");
         }
     }
 
@@ -264,7 +222,6 @@ public class InventoryManager : MonoBehaviour
         { 
             if (currentItem == null)
             {
-                Debug.Log("No item selected to use.");
                 return;
             }
 
@@ -277,7 +234,6 @@ public class InventoryManager : MonoBehaviour
         {
             currentItem = null;
             slots[currentSlotIndex] = null;
-            Debug.Log("Clear Item");
             UpdateUI();
         }
     }
@@ -304,7 +260,6 @@ public class InventoryManager : MonoBehaviour
         {
             if (context.performed)
             {
-                Debug.Log("Pickup key pressed, attempting raycast...");
                 manager.TryPickupViaRaycast();
             }
         }
@@ -314,8 +269,6 @@ public class InventoryManager : MonoBehaviour
         {
             if (context.performed && manager.currentItem != null && !manager.currentItem.IsBeingUsed)
             {
-                Debug.Log($"Dropped {manager.currentItem.itemName}");
-
                 // Player body's forward
                 Transform playerTransform = manager.playerCamera.transform.root;
                 Vector3 flatForward = manager.playerCamera.transform.forward;
@@ -353,28 +306,17 @@ public class InventoryManager : MonoBehaviour
                 {
                     dropPos = hit.point + Vector3.up * 0.1f;
                 }
-                else
-                {
-                    Debug.LogWarning("No ground detected below drop position, dropping at default position.");
-                    // If no ground found, drop at player feet
-                    // dropPos = manager.playerCamera.transform.position + Vector3.down * 1f;
-                }
 
                 manager.currentItem.OnDropped(dropPos);
                 int index = System.Array.IndexOf(manager.slots, manager.currentItem);
                 manager.RemoveItemFromSlot(index);
                 
             }
-            else if (context.performed && manager.currentItem != null && manager.currentItem.IsBeingUsed)
-            {
-                Debug.Log($"Cannot drop {manager.currentItem.itemName} while it is being used!");
-            }
         }
 
 
         public void OnUse(InputAction.CallbackContext context)
         {
-            Debug.Log($"OnUse called: phase={context.phase}");
             if (context.started)
                 manager.UseCurrentItem();
             else if (context.canceled)

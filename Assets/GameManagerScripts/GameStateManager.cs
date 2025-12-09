@@ -61,7 +61,6 @@ public class GameStateManager : MonoBehaviour
     public void ResumeGameObjects()
     {
         gameIsPaused = false; // Flag the game as resumed
-        Debug.Log($"Game paused: {gameIsPaused}");
         OnGamePauseChanged?.Invoke(gameIsPaused); // Notify subscribers that the game is resumed
 
         AudioListener.pause = false;
@@ -79,7 +78,6 @@ public class GameStateManager : MonoBehaviour
     public void PauseGameObjects()
     {
         gameIsPaused = true; // Flag the game as paused
-        Debug.Log($"Game paused: {gameIsPaused}");
         OnGamePauseChanged?.Invoke(gameIsPaused); // Notify subscribers that the game is paused
 
         AudioListener.pause = true;

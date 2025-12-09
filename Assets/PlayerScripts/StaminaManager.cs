@@ -68,7 +68,6 @@ public class StaminaManager : MonoBehaviour
     private void HandlePause(bool gameStateIsPaused)
     {
         managerIsPaused = gameStateIsPaused;
-        Debug.Log($"Stamina Manager paused: {managerIsPaused}");
     }
     private void UpdateHungerOverTime()
     {
