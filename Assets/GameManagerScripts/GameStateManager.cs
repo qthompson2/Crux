@@ -81,6 +81,8 @@ public class GameStateManager : MonoBehaviour
 
     public void ResetGameObjects()
     {
+        AudioListener.pause = false;
+        
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
