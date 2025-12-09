@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -7,7 +8,6 @@ public class UIManager : MonoBehaviour
 	private static readonly WaitForSeconds _waitForSeconds0_01 = new(0.01f);
 	[Header("UI Screens")]
     [SerializeField] public GameObject pauseMenuScreen;
-    [SerializeField] public GameObject winScreen;
     [SerializeField] public GameObject loseScreen;
     [SerializeField] public GameObject helpScreen;
     [SerializeField] private GameObject fadeOutPanel;
@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
     }
     public void ShowWinScreen()
     {
-        StartCoroutine(FadeOutToScreen(winScreen));
+        StartCoroutine(FadeOut());
     }
     public void ShowLoseScreen()
     {
@@ -81,15 +81,15 @@ public class UIManager : MonoBehaviour
         return currentScreen;
     }
 
-    private IEnumerator FadeOutToScreen(GameObject screen)
+    private IEnumerator FadeOut()
 	{
+        panelImage.color = new(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0);
         while (panelImage.color.a < 1)
         {
 			panelImage.color = new(panelImage.color.r, panelImage.color.g, panelImage.color.b, panelImage.color.a + 0.01f);
             yield return _waitForSeconds0_01;
         }
 
-        ShowScreen(screen);
-        panelImage.color = new(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0);
+        SceneManager.LoadScene("EndScene");
 	}
 }

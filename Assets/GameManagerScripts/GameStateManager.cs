@@ -61,7 +61,7 @@ public class GameStateManager : MonoBehaviour
         }
         else if (player.transform.position.y > 400)
         {
-            if (uiManager.getCurrentScreen() != uiManager.winScreen && !shownWin)
+            if (!shownWin)
 			{
 				uiManager.ShowWinScreen();
                 shownWin = true;
