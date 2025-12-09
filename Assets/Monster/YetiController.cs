@@ -22,11 +22,17 @@ public class YetiController : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log(other.gameObject.name);
-        Debug.Log(other.gameObject.tag);
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<StaminaManager>().AddDamage();
+            StaminaManager staminaManager = other.gameObject.GetComponent<StaminaManager>();
+            if (staminaManager != null)
+            {
+                if (!staminaManager.hasBeenLifted)
+                {
+                    staminaManager.hasBeenLifted = true;
+                }
+                staminaManager.AddDamage();
+            }
         }
     }
 }

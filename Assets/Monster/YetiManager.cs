@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class YetiManager : MonoBehaviour
 {
-    [SerializeField] private float yetiSpawnY = 200f;
+    [SerializeField] private float yetiSpawnY = 180f;
     private Transform player;
     private List<GameObject> yetis;
     private bool isActive = false;

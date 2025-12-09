@@ -37,6 +37,8 @@ public class StaminaManager : MonoBehaviour
     public float end_time;
     [SerializeField] float safeThreashold = 2f;
 
+    public bool hasBeenLifted = false;
+
     [Header("Thresholds")]
     [SerializeField] private float labourousActionThreshold = 0.2f;
 
@@ -141,6 +143,11 @@ public class StaminaManager : MonoBehaviour
     public void checkFallDamage()
     {
         // Calculate how far the player fell
+        if (hasBeenLifted)
+        {
+            start_height += 10f;
+            hasBeenLifted = false;
+        }
         float fallDistance = start_height - end_height;
 
         if (fallDistance <= safeThreashold) //If player fell the safe distance don't apply dmg
