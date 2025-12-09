@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cccc02ec37e7bac4f8246f5022c297f3, type: 3}
   m_Name: 0_4 Night
   m_EditorClassIdentifier: 
-  Tint: {r: 0.243, g: 0.18, b: 0.27, a: 1}
+  Tint: {r: 0, g: 0, b: 0, a: 1}
   Exposure: 1.4
   Contrast: 1.5
-  LightColor: {r: 0.5424528, g: 0.567639, b: 1, a: 1}
-  SunColor: {r: 1.2565557, g: 0.3679245, b: 1.471698, a: 1}
-  SunSize: 0.1
+  LightColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+  SunColor: {r: 1.9648324, g: 1.9648324, b: 1.9648324, a: 1}
+  SunSize: 0.2
   SkyColorBlend: 1
-  SkyColor: {r: 0.09720755, g: 0.07290567, b: 0.184, a: 1}
+  SkyColor: {r: 0, g: 0, b: 0, a: 1}
   SkyBlend: 0.5
   EquatorBrightness: 1.5
   EquatorBlend: 1
@@ -27,9 +27,9 @@ MonoBehaviour:
   EquatorOffset: -10
   GroundColor: {r: 0.27450982, g: 0.21176472, b: 0.21176472, a: 1}
   GroundBlend: 1
-  SkyboxIntensityMultiplier: 2
+  SkyboxIntensityMultiplier: 1.5
   reflectionIntensity: 0.45
-  fogColor: {r: 0.1471756, g: 0.06603773, b: 0.26415092, a: 1}
-  fogDensity: 0.01
+  fogColor: {r: 0.15631934, g: 0.13950695, b: 0.1792453, a: 1}
+  fogDensity: 0.5
   fogStartDistance: 5
   fogEndDistance: 80

@@ -15,7 +15,7 @@ MonoBehaviour:
   Tint: {r: 0.2924528, g: 0.20753345, b: 0.16967781, a: 1}
   Exposure: 0.94
   Contrast: 1.35
-  LightColor: {r: 0.990566, g: 0.5967202, b: 0.4906105, a: 1}
+  LightColor: {r: 0.5471698, g: 0.3333308, b: 0.2761659, a: 1}
   SunColor: {r: 47.937256, g: 11.659349, b: 0, a: 1}
   SunSize: 0.1
   SkyColorBlend: 1
@@ -29,7 +29,7 @@ MonoBehaviour:
   GroundBlend: 1
   SkyboxIntensityMultiplier: 1
   reflectionIntensity: 0.65
-  fogColor: {r: 0.8207547, g: 0.35381472, b: 0.23616053, a: 1}
-  fogDensity: 0.015
-  fogStartDistance: 20
-  fogEndDistance: 120
+  fogColor: {r: 0.2924528, g: 0.22711141, b: 0.21106264, a: 1}
+  fogDensity: 0.5
+  fogStartDistance: 5
+  fogEndDistance: 80
