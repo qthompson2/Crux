@@ -316,18 +316,32 @@ public class InventoryManager : MonoBehaviour
             {
                 Debug.Log($"Dropped {manager.currentItem.itemName}");
 
+                // Player body's forward
+                Transform playerTransform = manager.playerCamera.transform.root;
+                Vector3 flatForward = manager.playerCamera.transform.forward;
+                flatForward.y = 0;
+                if (flatForward.sqrMagnitude < 0.01f)
+                {
+                    flatForward = playerTransform.forward; 
+                }
+                flatForward.Normalize();
+
                 // Desired drop distance, but capped max distance
                 float desiredDropDistance = 1.5f;
                 float maxDropDistance = 3f; // max distance allowed to drop
 
-                // Calculate initial target drop position based on camera forward
-                Vector3 dropPos = manager.playerCamera.transform.position + manager.playerCamera.transform.forward * desiredDropDistance;
+                // (Old drop) Calculate initial target drop position based on camera forward
+                // Vector3 dropPos = manager.playerCamera.transform.position + manager.playerCamera.transform.forward * desiredDropDistance;
+
+                // (New drop) Start drop position using *flat* forward
+                Vector3 dropPos = manager.playerCamera.transform.position + flatForward * desiredDropDistance;
 
                 // Check distance from player to dropPos
                 float distance = Vector3.Distance(manager.playerCamera.transform.position, dropPos);
                 if (distance > maxDropDistance)
                 {
-                    dropPos = manager.playerCamera.transform.position + manager.playerCamera.transform.forward * maxDropDistance;
+                    //dropPos = manager.playerCamera.transform.position + manager.playerCamera.transform.forward * maxDropDistance;
+                    dropPos = manager.playerCamera.transform.position + flatForward * maxDropDistance;
                 }
 
                 // Raycast downward to find ground below drop position
@@ -342,6 +356,8 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     Debug.LogWarning("No ground detected below drop position, dropping at default position.");
+                    // If no ground found, drop at player feet
+                    // dropPos = manager.playerCamera.transform.position + Vector3.down * 1f;
                 }
 
                 manager.currentItem.OnDropped(dropPos);
