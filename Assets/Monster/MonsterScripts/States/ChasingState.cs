@@ -73,9 +73,9 @@ public class ChasingState : MonsterBaseState
         monster.DisableChaseEffect();
         if (monster.chaseSounds != null)
 		{
-			if (!monster.chaseSounds.isPlaying)
+			if (monster.chaseSounds.isPlaying)
 			{
-				monster.chaseSounds.Play();
+				monster.chaseSounds.Stop();
 			}
 		}
     }
