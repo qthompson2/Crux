@@ -110,7 +110,7 @@ MonoBehaviour:
   itemName: Adrenaline
   weight: 0.03
   useTime: 1.5
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: c9fc7f57248ff9644a86ac7d9c54ea92, type: 3}
   destroyOnUse: 1
   instantStamina: 20
   regenMultiplier: 4

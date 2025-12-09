@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 145839779568297719}
   repathRate: 0.2
-  minSearchRadius: 7
+  minSearchRadius: 8
   destinationTolerance: 2
   arrivalThreshold: 2
   maxSearchRadius: 20

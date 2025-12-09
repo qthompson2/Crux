@@ -290,7 +290,7 @@ MonoBehaviour:
   itemName: Flare Gun
   weight: 0.1
   useTime: 0.5
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 7e02b60204d70b14cb4ded7bbe407b76, type: 3}
   destroyOnUse: 1
   flareProjectile: {fileID: 5400000, guid: 502f397bde12655448ff152eac00cdc7, type: 3}
   launchForce: 2000
