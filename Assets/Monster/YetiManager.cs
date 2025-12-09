@@ -5,6 +5,8 @@ using UnityEngine;
 public class YetiManager : MonoBehaviour
 {
     [SerializeField] private float yetiSpawnY = 180f;
+    [SerializeField] private float yetiCatchupY = 285f;
+    [SerializeField] private bool hasCaughtUp = false;
     private Transform player;
     private List<GameObject> yetis;
     private bool isActive = false;
@@ -31,6 +33,19 @@ public class YetiManager : MonoBehaviour
             SetYetisActive(true);
             hasActivated = true;
 		}
+        if (player.position.y > 300f && !hasCaughtUp)
+        {
+            foreach (GameObject yeti in yetis)
+            {
+                if (yeti.transform.position.y < yetiCatchupY)
+                {
+                    Transform agent = yeti.transform.Find("Agent");
+                    UnityEngine.AI.NavMeshAgent nav = agent.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                    nav.Warp(new Vector3(899.4767f, 298.0462f, 101.5188f));
+                }
+            }
+            hasCaughtUp = true;
+        }
     }
 
     private void SetYetisActive(bool isActive)
