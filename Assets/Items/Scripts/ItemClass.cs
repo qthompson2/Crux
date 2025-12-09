@@ -44,14 +44,11 @@ public abstract class ItemClass : MonoBehaviour
         isBeingUsed = false;
 
         useIndicator?.ResetProgress();
-
-        Debug.Log($"{itemName} use cancelled!");
     }
 
     private IEnumerator UseRoutine()
     {
         isBeingUsed = true;
-        Debug.Log($"Started using {itemName}...");
 
         float elapsed = 0f;
         while (elapsed < useTime)
@@ -72,7 +69,6 @@ public abstract class ItemClass : MonoBehaviour
             Destroy(gameObject);
             ItemManager.ClearItem();
         }
-        Debug.Log($"{itemName} use complete!");
     }
 
     /// <summary>
@@ -85,7 +81,6 @@ public abstract class ItemClass : MonoBehaviour
     /// </summary>
     public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef, InventoryManager ItemManagerRef, Camera cameraRef)
     {
-        Debug.Log($"{itemName} was picked up.");
 
         // Instead of disabling whole GameObject, just hide renderer and collider
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
@@ -111,8 +106,6 @@ public abstract class ItemClass : MonoBehaviour
     /// </summary>
     public virtual void OnDropped(Vector3 dropPosition)
     {
-        Debug.Log($"{itemName} dropped.");
-
         transform.position = dropPosition;
 
         // Show the item again

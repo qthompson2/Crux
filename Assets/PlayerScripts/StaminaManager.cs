@@ -2,6 +2,9 @@
 
 public class StaminaManager : MonoBehaviour
 {
+    [Header("Pause State")]
+    private bool managerIsPaused = false;
+
     [Header("References")]
     [SerializeField] private StaminaBar staminaBar;
     [SerializeField] private InventoryManager inventoryManger;
@@ -42,16 +45,31 @@ public class StaminaManager : MonoBehaviour
     [Header("Thresholds")]
     [SerializeField] private float labourousActionThreshold = 0.2f;
 
+    // Lifecycle -----------------------------------------------
     private void Start()
     {
         currentStamina = maxStamina;
     }
-
+    private void OnEnable()
+    {
+        GameStateManager.OnGamePauseChanged += HandlePause; // Subscribe to pause events
+    }
     private void Update()
     {
+        if (managerIsPaused) return; // skip logic while the game is paused
+
         UpdateHungerOverTime();
         UpdateStimTimer();
         UpdateStamina();
+    }
+    private void OnDisable()
+    {
+        GameStateManager.OnGamePauseChanged -= HandlePause; // Unsubscribe from pause events
+    }
+    // Methods -----------------------------------------------
+    private void HandlePause(bool gameStateIsPaused)
+    {
+        managerIsPaused = gameStateIsPaused;
     }
     private void UpdateHungerOverTime()
     {
