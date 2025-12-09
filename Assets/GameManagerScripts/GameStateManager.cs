@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -12,7 +13,12 @@ public class GameStateManager : MonoBehaviour
     private float oldStaminaRegen;
     private int hasShownControls;
 
-	void Start()
+    [Header("Pause State")]
+    [SerializeField] public static bool gameIsPaused { get; private set; } // static property to track pause state, all scripts can access
+    public static event Action<bool> OnGamePauseChanged; // Event to notify subscribers of pause state changes
+
+
+    void Start()
 	{
 		hasShownControls = PlayerPrefs.GetInt("hasShownControls", 0);
 
@@ -54,6 +60,10 @@ public class GameStateManager : MonoBehaviour
 
     public void ResumeGameObjects()
     {
+        gameIsPaused = false; // Flag the game as resumed
+        Debug.Log($"Game paused: {gameIsPaused}");
+        OnGamePauseChanged?.Invoke(gameIsPaused); // Notify subscribers that the game is resumed
+
         AudioListener.pause = false;
 
         Cursor.visible = false;
@@ -68,6 +78,10 @@ public class GameStateManager : MonoBehaviour
 
     public void PauseGameObjects()
     {
+        gameIsPaused = true; // Flag the game as paused
+        Debug.Log($"Game paused: {gameIsPaused}");
+        OnGamePauseChanged?.Invoke(gameIsPaused); // Notify subscribers that the game is paused
+
         AudioListener.pause = true;
 
         Cursor.visible = true;
