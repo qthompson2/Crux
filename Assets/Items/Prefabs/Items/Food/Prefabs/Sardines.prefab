@@ -271,6 +271,6 @@ MonoBehaviour:
   itemName: Sardines
   weight: 0.1
   useTime: 1
-  itemIcon: {fileID: 21300000, guid: e354aa46a682107479fa1b80bc9c5d77, type: 3}
+  itemIcon: {fileID: 21300000, guid: 7c51a61b57a4f0f4499ce058d57a3c62, type: 3}
   destroyOnUse: 1
   foodValue: 0.25
