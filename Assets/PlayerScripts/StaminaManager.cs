@@ -39,37 +39,17 @@ public class StaminaManager : MonoBehaviour
 
     [Header("Thresholds")]
     [SerializeField] private float labourousActionThreshold = 0.2f;
-    
-    [Header("Pause State")]
-    private bool isPaused = false;
 
-
-    // Lifecycle -----------------------------------------------
     private void Start()
     {
         currentStamina = maxStamina;
     }
-    private void OnEnable()
-    {
-        GameStateManager.OnPauseChanged += HandlePause; // Subscribe to pause events
-    }
+
     private void Update()
     {
-        if (isPaused) return; // skip logic while the game is paused
-
         UpdateHungerOverTime();
         UpdateStimTimer();
         UpdateStamina();
-    }
-    private void OnDisable()
-    {
-        GameStateManager.OnPauseChanged -= HandlePause; // Unsubscribe from pause events
-    }
-    // Methods -----------------------------------------------
-    private void HandlePause(bool GameStateisPaused)
-    {
-        isPaused = GameStateisPaused;
-        Debug.Log($"Stamina Manager paused: {isPaused}");
     }
     private void UpdateHungerOverTime()
     {
