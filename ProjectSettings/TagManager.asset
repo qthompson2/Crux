@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PostProcess
   - Monster
+  - WaterTrigger
   layers:
   - Default
   - TransparentFX

@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class WaterCollision : MonoBehaviour
 {
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
         Debug.Log("Water Collision Detected");
         // compare layer
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (other.gameObject.tag == "WaterTrigger")
         {
             Debug.Log("Player collided with water.");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -22,7 +22,7 @@ public class WaterCollision : MonoBehaviour
         }
         else {
             // log the tag of the object that collided with water
-            Debug.Log("Object with tag " + collision.gameObject.tag + " collided with water.");
+            Debug.Log("Object with tag " + other.gameObject.tag + " collided with water.");
         }
     }
 }
