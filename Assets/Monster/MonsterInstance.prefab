@@ -1036,7 +1036,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 2
-  m_Speed: 10
+  m_Speed: 12
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 145839779568297719}
   repathRate: 0.2
-  minSearchRadius: 8
+  minSearchRadius: 12
   destinationTolerance: 2
   arrivalThreshold: 2
   maxSearchRadius: 20
