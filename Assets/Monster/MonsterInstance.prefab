@@ -1036,7 +1036,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 2
-  m_Speed: 12
+  m_Speed: 14
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1045,7 +1045,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1661563879258678207
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 145839779568297719}
   repathRate: 0.2
-  minSearchRadius: 12
+  minSearchRadius: 7
   destinationTolerance: 2
   arrivalThreshold: 2
   maxSearchRadius: 20
@@ -2235,6 +2235,14 @@ PrefabInstance:
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 339297297870332608, guid: da3003b554a3512449f1924b2eb80117, type: 3}
+      propertyPath: m_Height
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 339297297870332608, guid: da3003b554a3512449f1924b2eb80117, type: 3}
+      propertyPath: m_Radius
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 339297297870332608, guid: da3003b554a3512449f1924b2eb80117, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 0
       objectReference: {fileID: 0}
@@ -2436,7 +2444,7 @@ PrefabInstance:
       objectReference: {fileID: 5927780627544116909}
     - target: {fileID: 4197245945629085747, guid: da3003b554a3512449f1924b2eb80117, type: 3}
       propertyPath: followSpeed
-      value: 1000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 4197245945629085747, guid: da3003b554a3512449f1924b2eb80117, type: 3}
       propertyPath: rotationSpeed

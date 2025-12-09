@@ -41,12 +41,12 @@ public class ChasingState : MonsterBaseState
             monster.EnableChaseEffect();
         }
 
-        if (dist <= reachThreshold)
-        {
-            monster.caughtPlayer = true;
-            monster.SwitchState(monster.fleeingState);
-            return;
-        }
+        // if (dist <= reachThreshold)
+        // {
+        //     monster.caughtPlayer = true;
+        //     monster.SwitchState(monster.fleeingState);
+        //     return;
+        // }
 
         chaseTimer += Time.deltaTime;
         if (chaseTimer >= chaseDuration && dist < alertThreshold)

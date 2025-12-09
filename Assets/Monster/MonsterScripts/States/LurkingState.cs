@@ -20,6 +20,8 @@ public class LurkingState : MonsterBaseState
     private float currentAngle;
     private bool sweepingRight;
 
+    private Vector3 startPosition;
+
     private Vector3 directionToPlayer;
 
     public LurkingState(float visionDistance, float horizontalSweepSpeed, int verticalRayCount, float verticalAngleRange, float lurkAngleRange, float lurkDuration, float minLurkDistance, float maxLurkDistance, float reachThreshold, float maxLurkTime, float chaseDistanceThreshold)
@@ -43,6 +45,7 @@ public class LurkingState : MonsterBaseState
         totalLurkTime = 0f;
         currentAngle = -90f;
         sweepingRight = true;
+        startPosition = monster.transform.position;
 
         monster.StartCoroutine(InitializeLurk(monster)); // short setup delay
     }
@@ -76,6 +79,11 @@ public class LurkingState : MonsterBaseState
         if (totalLurkTime >= maxLurkTime)
         {
             totalLurkTime = 0f;
+            if (Vector3.Distance(monster.transform.position, startPosition) < 1f)
+            {
+                monster.SwitchState(monster.fleeingState);
+                return;
+            }
             monster.SwitchState(monster.chasingState);
             return;
         }
@@ -145,6 +153,7 @@ public class LurkingState : MonsterBaseState
                     directionToPlayer,
                     lurkAngleRange
                 );
+                startPosition = monster.transform.position;
             }
         }
     }
