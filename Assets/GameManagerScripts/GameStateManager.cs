@@ -71,7 +71,7 @@ public class GameStateManager : MonoBehaviour
         uiManager.HideCurrentScreen();
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInputHandler>().enabled = true;
-        player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
+        //player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
         monsters.GetComponent<MonsterManager>().Resume();
         cameraOverlay.GetComponent<UICameraOverlay>().Resume();
     }
@@ -88,7 +88,7 @@ public class GameStateManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
-        (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
+        //(oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
         monsters.GetComponent<MonsterManager>().Pause();
         cameraOverlay.GetComponent<UICameraOverlay>().Pause();
     }
