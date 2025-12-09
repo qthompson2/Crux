@@ -5,6 +5,7 @@ public class GameStateManager : MonoBehaviour
     [Header("Game Objects")]
     [SerializeField] public GameObject player;
     [SerializeField] private GameObject monsters;
+    [SerializeField] private GameObject yetis;
     [SerializeField] private GameObject cameraOverlay;
 
     [Header("Manager Scripts")]
@@ -64,6 +65,7 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerInputHandler>().enabled = true;
         player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
         monsters.GetComponent<MonsterManager>().Resume();
+        yetis.GetComponent<YetiManager>().Resume();
         cameraOverlay.GetComponent<UICameraOverlay>().Resume();
     }
 
@@ -77,6 +79,8 @@ public class GameStateManager : MonoBehaviour
         player.GetComponent<PlayerInputHandler>().enabled = false;
         (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
         monsters.GetComponent<MonsterManager>().Pause();
+        yetis.GetComponent<YetiManager>().Pause();
+
         cameraOverlay.GetComponent<UICameraOverlay>().Pause();
     }
 

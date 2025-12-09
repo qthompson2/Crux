@@ -26,10 +26,11 @@ public class YetiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.position.y < yetiSpawnY)
-        {
+        if (!hasActivated && player.position.y > yetiSpawnY)
+		{
             SetYetisActive(true);
-        }
+            hasActivated = true;
+		}
     }
 
     private void SetYetisActive(bool isActive)
