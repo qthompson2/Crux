@@ -12,6 +12,8 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     private float oldStaminaRegen;
     private int hasShownControls;
+    private bool shownWin = false;
+    private bool shownLose = false;
 
 	void Start()
 	{
@@ -42,14 +44,22 @@ public class GameStateManager : MonoBehaviour
                 PauseGameObjects();
             }
         }
-        if (player.GetComponent<StaminaManager>().maxCap == 0)
+        else if (player.GetComponent<StaminaManager>().maxCap == 0)
         {
-            uiManager.ShowLoseScreen();
+            if (uiManager.getCurrentScreen() != uiManager.pauseMenuScreen && !shownLose)
+			{
+				uiManager.ShowLoseScreen();
+                shownLose = true;
+			}
             PauseGameObjects();
         }
-        if (player.transform.position.y > 400)
+        else if (player.transform.position.y > 400)
         {
-            uiManager.ShowWinScreen();
+            if (uiManager.getCurrentScreen() != uiManager.winScreen && !shownWin)
+			{
+				uiManager.ShowWinScreen();
+                shownWin = true;
+			}
             PauseGameObjects();
         }
     }

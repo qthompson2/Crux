@@ -11,12 +11,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] public GameObject loseScreen;
     [SerializeField] public GameObject helpScreen;
     [SerializeField] private GameObject fadeOutPanel;
+    [SerializeField] private AudioSource menuStatic;
+    [SerializeField] private AudioSource buttonPress;
     private Image panelImage;
     private GameObject currentScreen;
 
 	void Start()
 	{
 		panelImage = fadeOutPanel.GetComponent<Image>();
+        menuStatic.ignoreListenerPause = true;
+        buttonPress.ignoreListenerPause = true;
 	}
 
 	private void ShowScreen(GameObject screen)
@@ -34,6 +38,10 @@ public class UIManager : MonoBehaviour
 
     public void ShowPauseMenu()
     {
+        if (!menuStatic.isPlaying)
+		{
+			menuStatic.Play();
+		}
         ShowScreen(pauseMenuScreen);
     }
     public void ShowWinScreen()
@@ -42,16 +50,25 @@ public class UIManager : MonoBehaviour
     }
     public void ShowLoseScreen()
     {
+        if (!menuStatic.isPlaying)
+		{
+			menuStatic.Play();
+		}
         ShowScreen(loseScreen);
     }
 
     public void ShowHelpScreen()
 	{
+        if (!menuStatic.isPlaying)
+		{
+			menuStatic.Play();
+		}
 		ShowScreen(helpScreen);
 	}
 
     public void HideCurrentScreen()
     {
+        menuStatic.Stop();
         if (currentScreen != null)
         {
             currentScreen.SetActive(false);

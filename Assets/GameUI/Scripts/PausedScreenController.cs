@@ -11,6 +11,7 @@ public class PausedScreenController : MonoBehaviour
     [SerializeField] private Button HelpButton;
     [SerializeField] private GameObject HelpScreen;
 	[SerializeField] private string ScreenName;
+	[SerializeField] private AudioSource buttonPress;
     private UICameraOverlay CameraOverlay;
 	private UIManager UI;
 
@@ -19,6 +20,7 @@ public class PausedScreenController : MonoBehaviour
 		HelpButton.onClick.AddListener(OnHelpButtonPressed);
         CameraOverlay = CameraOverlayObject.GetComponent<UICameraOverlay>();
 		UI = GameObject.Find("GameManager").GetComponent<UIManager>();
+		buttonPress.ignoreListenerPause = true;
 	}
 
 	void Update()
@@ -30,13 +32,14 @@ public class PausedScreenController : MonoBehaviour
 
 	public void OnHelpButtonPressed()
 	{
+		buttonPress.Play();
 		if (ScreenName == "Pause")
 		{
-			HelpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(UI.ShowPauseMenu);
+			HelpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(() => {buttonPress.Play(); UI.ShowPauseMenu();});
 		}
 		else if (ScreenName == "Lose")
 		{
-			HelpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(UI.ShowLoseScreen);
+			HelpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(() => {buttonPress.Play(); UI.ShowLoseScreen();});
 		}
 		UI.ShowHelpScreen();
 	}

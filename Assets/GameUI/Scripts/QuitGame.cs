@@ -1,14 +1,11 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class QuitGame : MonoBehaviour
 {
     public void QuitApplication()
     {
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        SceneManager.LoadScene("TitleScene");
     }
 }

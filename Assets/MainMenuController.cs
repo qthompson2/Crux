@@ -13,6 +13,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Image fadeOutPanel;
     [SerializeField] private AudioClip tapePlay;
     [SerializeField] private AudioSource source;
+	[SerializeField] private AudioSource buttonPress;
 
 	void Start()
 	{
@@ -20,10 +21,11 @@ public class MainMenuController : MonoBehaviour
 		startButton.onClick.AddListener(OnStartButtonPressed);
 		helpButton.onClick.AddListener(OnHelpButtonPressed);
 		quitButton.onClick.AddListener(OnQuitButtonPressed);
-		helpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(() => helpScreen.SetActive(false));
+		helpScreen.GetComponent<HelpScreenController>().SetReturnButtonOnPress(() => {buttonPress.Play(); helpScreen.SetActive(false);});
         source.Stop();
         source.loop = false;
         source.playOnAwake = false;
+		AudioListener.pause = false;
 	}
 
 	public void OnStartButtonPressed()
@@ -33,12 +35,14 @@ public class MainMenuController : MonoBehaviour
 
     public void OnHelpButtonPressed()
 	{
+		buttonPress.Play();
 		helpScreen.SetActive(true);
 	}
     
     public void OnQuitButtonPressed()
 	{
-		
+		buttonPress.Play();
+		Application.Quit();
 	}
 
     private IEnumerator FadeOut()
