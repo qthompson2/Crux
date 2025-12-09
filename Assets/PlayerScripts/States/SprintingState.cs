@@ -30,11 +30,12 @@ public class SprintingState : PlayerBaseState
             return;
         }
 
-        if (player.inputHandler.CrouchHeld)
-        {
-            player.SwitchState(player.slidingState);
-            return;
-        }
+        // Sliding : Off for now, from Sprint + Crouch held
+        //if (player.inputHandler.CrouchHeld)
+        //{
+        //    player.SwitchState(player.slidingState);
+        //    return;
+        //}
 
         if (player.inputHandler.JumpPressed && player.controller.IsGrounded && player.staminaManager.LabourousActionAllowed())
         {

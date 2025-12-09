@@ -22,11 +22,12 @@ public class CrouchingState : PlayerBaseState
             return;
         }
 
-        if (player.inputHandler.SprintHeld)
-        {
-            player.SwitchState(player.slidingState);
-            return;
-        }
+        // Sliding : Off for now, from Crouch + Shift held
+        //if (player.inputHandler.SprintHeld)
+        //{
+        //    player.SwitchState(player.slidingState);
+        //    return;
+        //}
 
         if (player.inputHandler.JumpPressed && player.controller.IsGrounded)
         {
