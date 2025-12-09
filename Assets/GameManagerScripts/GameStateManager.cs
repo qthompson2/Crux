@@ -68,6 +68,14 @@ public class GameStateManager : MonoBehaviour
 			}
             PauseGameObjects();
         }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            player.transform.position = new Vector3(500.1205f, 199.48f, 242.2171f);
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            player.transform.position = new Vector3(740.0417f, 363.904f, 91.58318f);
+        }
     }
 
     public void ResumeGameObjects()
