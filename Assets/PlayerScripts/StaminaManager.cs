@@ -2,6 +2,9 @@
 
 public class StaminaManager : MonoBehaviour
 {
+    [Header("Pause State")]
+    private bool managerIsPaused = false;
+
     [Header("References")]
     [SerializeField] private StaminaBar staminaBar;
     [SerializeField] private InventoryManager inventoryManger;
@@ -16,6 +19,10 @@ public class StaminaManager : MonoBehaviour
     [SerializeField] public float climbCost = 20f;
     [SerializeField] public float sprintCost = 25f;
     [SerializeField] public float jumpCost = 30f;
+
+    [Header("Stim Shot Effects")]
+    private float stimTimer = 0f;          // How much time is left on the boost
+    private float stimRegenMultiplier = 1f; // 1f = normal speed, 2f = double speed
 
     [Header("Penalties (0–1)")]
     [SerializeField, Range(0f, 1f)] private float hungerPenalty = 0f;
@@ -33,18 +40,36 @@ public class StaminaManager : MonoBehaviour
     public float end_time;
     [SerializeField] float safeThreashold = 2f;
 
+    public bool hasBeenLifted = false;
+
     [Header("Thresholds")]
     [SerializeField] private float labourousActionThreshold = 0.2f;
 
+    // Lifecycle -----------------------------------------------
     private void Start()
     {
         currentStamina = maxStamina;
     }
-
+    private void OnEnable()
+    {
+        GameStateManager.OnGamePauseChanged += HandlePause; // Subscribe to pause events
+    }
     private void Update()
     {
+        if (managerIsPaused) return; // skip logic while the game is paused
+
         UpdateHungerOverTime();
+        UpdateStimTimer();
         UpdateStamina();
+    }
+    private void OnDisable()
+    {
+        GameStateManager.OnGamePauseChanged -= HandlePause; // Unsubscribe from pause events
+    }
+    // Methods -----------------------------------------------
+    private void HandlePause(bool gameStateIsPaused)
+    {
+        managerIsPaused = gameStateIsPaused;
     }
     private void UpdateHungerOverTime()
     {
@@ -66,17 +91,42 @@ public class StaminaManager : MonoBehaviour
         maxCap = Mathf.Max(0f, maxStamina - hungerLoss - damageLoss - weightLoss);
 
         // Instantly clamp stamina if the new cap is lower
+        float effectiveRegenRate = staminaRegenRate * stimRegenMultiplier;
+
         if (currentStamina > maxCap)
             currentStamina = maxCap;
         else
             // Smoothly regenerate stamina if below the cap
-            currentStamina = Mathf.MoveTowards(currentStamina, maxCap, staminaRegenRate * Time.deltaTime);
+            currentStamina = Mathf.MoveTowards(currentStamina, maxCap, effectiveRegenRate * Time.deltaTime);
 
         // Update UI
         if (staminaBar != null)
             staminaBar.UpdateBar(currentStamina, maxStamina, hungerLoss, damageLoss, weightLoss);
     }
+    private void UpdateStimTimer()
+    {
+        if (stimTimer > 0)
+        {
+            stimTimer -= Time.deltaTime;
+            if (stimTimer <= 0)
+            {
+                // Effect wore off, return to normal
+                stimRegenMultiplier = 1f;
+                //End effect
+            }
+        }
+    }
 
+    public void ApplyStim(float instantAmount, float multiplier, float duration)
+    {
+        // 1. Instant Heal (Clamped to MaxCap so we don't overflow)
+        currentStamina = Mathf.Min(currentStamina + instantAmount, maxCap);
+
+        // 2. Start the Rapid Regen
+        stimRegenMultiplier = multiplier;
+        stimTimer = duration;
+        // Do post processing
+    }
     // -------------------------------
     // Stamina Actions
     // -------------------------------
@@ -111,6 +161,11 @@ public class StaminaManager : MonoBehaviour
     public void checkFallDamage()
     {
         // Calculate how far the player fell
+        if (hasBeenLifted)
+        {
+            start_height += 10f;
+            hasBeenLifted = false;
+        }
         float fallDistance = start_height - end_height;
 
         if (fallDistance <= safeThreashold) //If player fell the safe distance don't apply dmg
@@ -139,8 +194,6 @@ public class StaminaManager : MonoBehaviour
 
 
         takeFallDamage(totalDamage);
-
-        Debug.Log($"💥 Fall Damage: {totalDamage * 100f:F1}% (fell {fallDistance:F2}m)");
     }
 
     private void takeFallDamage(float damage)

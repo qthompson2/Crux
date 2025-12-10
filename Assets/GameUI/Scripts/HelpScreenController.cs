@@ -16,6 +16,7 @@ public class HelpScreenController : MonoBehaviour
     [SerializeField] private GameObject MouseGroup;
     [SerializeField] private GameObject InventoryGroup;
     [SerializeField] private GameObject MenuGroup;
+	[SerializeField] private AudioSource buttonPress;
     private int currentControls = 0;
 
 	void Start()
@@ -23,6 +24,7 @@ public class HelpScreenController : MonoBehaviour
 		ShowMovementControls();
         NextButton.onClick.AddListener(OnNextButtonPressed);
         PrevButton.onClick.AddListener(OnPrevButtonPressed);
+		buttonPress.ignoreListenerPause = true;
 	}
 
     private void ShowMovementControls()
@@ -60,6 +62,7 @@ public class HelpScreenController : MonoBehaviour
 
     public void OnNextButtonPressed()
 	{
+		buttonPress.Play();
 		if (currentControls == 0)
 		{
 			ShowInventoryControls();
@@ -72,6 +75,7 @@ public class HelpScreenController : MonoBehaviour
 
     public void OnPrevButtonPressed()
 	{
+		buttonPress.Play();
 		if (currentControls == 1)
 		{
 			ShowMovementControls();

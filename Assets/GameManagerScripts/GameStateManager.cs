@@ -1,19 +1,29 @@
 using UnityEngine;
+using System;
 
 public class GameStateManager : MonoBehaviour
 {
     [Header("Game Objects")]
     [SerializeField] public GameObject player;
     [SerializeField] private GameObject monsters;
+    [SerializeField] private GameObject yetis;
     [SerializeField] private GameObject cameraOverlay;
 
     [Header("Manager Scripts")]
     [SerializeField] private UIManager uiManager;
     private float oldStaminaRegen;
     private int hasShownControls;
+    private bool shownWin = false;
+    private bool shownLose = false;
 
-	void Start()
+    [Header("Pause State")]
+    [SerializeField] public static bool gameIsPaused { get; private set; } // static property to track pause state, all scripts can access
+    public static event Action<bool> OnGamePauseChanged; // Event to notify subscribers of pause state changes
+
+
+    void Start()
 	{
+        AudioListener.pause = false;
 		hasShownControls = PlayerPrefs.GetInt("hasShownControls", 0);
 
         if (hasShownControls == 0)
@@ -40,43 +50,66 @@ public class GameStateManager : MonoBehaviour
                 PauseGameObjects();
             }
         }
-        if (player.GetComponent<StaminaManager>().maxCap == 0)
+        else if (player.GetComponent<StaminaManager>().maxCap == 0)
         {
-            uiManager.ShowLoseScreen();
+            if (uiManager.getCurrentScreen() != uiManager.pauseMenuScreen && !shownLose)
+			{
+				uiManager.ShowLoseScreen();
+                shownLose = true;
+			}
             PauseGameObjects();
         }
-        if (player.transform.position.y > 400)
+        else if (player.transform.position.y > 400)
         {
-            uiManager.ShowWinScreen();
+            if (!shownWin)
+			{
+				uiManager.ShowWinScreen();
+                shownWin = true;
+			}
             PauseGameObjects();
         }
     }
 
     public void ResumeGameObjects()
     {
+        gameIsPaused = false; // Flag the game as resumed
+        OnGamePauseChanged?.Invoke(gameIsPaused); // Notify subscribers that the game is resumed
+
+        AudioListener.pause = false;
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         uiManager.HideCurrentScreen();
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInputHandler>().enabled = true;
-        player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
+        //player.GetComponent<StaminaManager>().staminaRegenRate = oldStaminaRegen;
         monsters.GetComponent<MonsterManager>().Resume();
+        yetis.GetComponent<YetiManager>().Resume();
         cameraOverlay.GetComponent<UICameraOverlay>().Resume();
     }
 
     public void PauseGameObjects()
     {
+        gameIsPaused = true; // Flag the game as paused
+        OnGamePauseChanged?.Invoke(gameIsPaused); // Notify subscribers that the game is paused
+
+        AudioListener.pause = true;
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         player.GetComponent<PlayerController>().enabled = false;
         player.GetComponent<PlayerInputHandler>().enabled = false;
-        (oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
+        //(oldStaminaRegen, player.GetComponent<StaminaManager>().staminaRegenRate) = (player.GetComponent<StaminaManager>().staminaRegenRate, 0f);
         monsters.GetComponent<MonsterManager>().Pause();
+        yetis.GetComponent<YetiManager>().Pause();
+
         cameraOverlay.GetComponent<UICameraOverlay>().Pause();
     }
 
     public void ResetGameObjects()
     {
+        AudioListener.pause = false;
+        
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

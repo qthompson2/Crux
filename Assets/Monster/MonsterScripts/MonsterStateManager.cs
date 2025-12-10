@@ -15,6 +15,7 @@ public class MonsterStateManager : MonoBehaviour
     [SerializeField] public float chaseDuration = 10f;
     [SerializeField] public float reachThreshold = 2f;
     [SerializeField] public float alertThreshold = 25f;
+    [SerializeField] public AudioSource chaseSounds;
 
     [Header("Monster Lurk Settings")]
     [SerializeField] public float visionDistance = 50f;
@@ -80,7 +81,6 @@ public class MonsterStateManager : MonoBehaviour
 
         currentState?.ExitState(this);
         currentState = newState;
-        Debug.Log("Monster State switched to: " + currentState.GetType().Name);
         currentState?.EnterState(this);
     }
 
@@ -140,13 +140,10 @@ public class MonsterStateManager : MonoBehaviour
         target.position = checkPos;
 
         agentController.SetGoal(target);
-
-        Debug.Log($"Random target set to {target.position}");
     }
 
     public void EnableChaseEffect()
     {
-        Debug.Log("Enabling Chase VHS Effect");
         vhsEffect._weight.value = 0.5f;
     }
 
@@ -158,7 +155,6 @@ public class MonsterStateManager : MonoBehaviour
     private void DisableChaseEffect_Internal()
     {
         vhsEffect._weight.value = 0.175f;
-        Debug.Log("Chase VHS Effect disabled");
     }
 
     private void OnDrawGizmos()

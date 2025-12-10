@@ -8,10 +8,12 @@ public abstract class ItemClass : MonoBehaviour
     [SerializeField, Range(0f, 1f)] public float weight = 0.1f;
     [SerializeField] public float useTime = 1f;
     [SerializeField] public Sprite itemIcon;
+    [SerializeField] protected bool destroyOnUse = true;
 
     protected StaminaManager staminaManager;
     protected UseIndicatorUI useIndicator;
     protected InventoryManager ItemManager;
+    protected Camera playerCamera;
 
     private bool isBeingUsed = false;
     private Coroutine useRoutine;
@@ -42,14 +44,11 @@ public abstract class ItemClass : MonoBehaviour
         isBeingUsed = false;
 
         useIndicator?.ResetProgress();
-
-        Debug.Log($"{itemName} use cancelled!");
     }
 
     private IEnumerator UseRoutine()
     {
         isBeingUsed = true;
-        Debug.Log($"Started using {itemName}...");
 
         float elapsed = 0f;
         while (elapsed < useTime)
@@ -64,10 +63,12 @@ public abstract class ItemClass : MonoBehaviour
         useIndicator?.ResetProgress();
 
         Use();
-        ItemManager.weightPenalty -= weight;
-        Destroy(gameObject);
-        ItemManager.ClearItem();
-        Debug.Log($"{itemName} use complete!");
+        if (destroyOnUse)
+        {
+            ItemManager.weightPenalty -= weight;
+            Destroy(gameObject);
+            ItemManager.ClearItem();
+        }
     }
 
     /// <summary>
@@ -78,9 +79,8 @@ public abstract class ItemClass : MonoBehaviour
     /// <summary>
     /// Called when the item is picked up; assigns references and disables world object.
     /// </summary>
-    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef, InventoryManager ItemManagerRef)
+    public virtual void OnPickedUp(StaminaManager staminaManagerRef, UseIndicatorUI useIndicatorRef, InventoryManager ItemManagerRef, Camera cameraRef)
     {
-        Debug.Log($"{itemName} was picked up.");
 
         // Instead of disabling whole GameObject, just hide renderer and collider
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
@@ -97,6 +97,7 @@ public abstract class ItemClass : MonoBehaviour
         staminaManager = staminaManagerRef;
         useIndicator = useIndicatorRef;
         ItemManager = ItemManagerRef;
+        playerCamera = cameraRef;
     }
 
 
@@ -105,8 +106,6 @@ public abstract class ItemClass : MonoBehaviour
     /// </summary>
     public virtual void OnDropped(Vector3 dropPosition)
     {
-        Debug.Log($"{itemName} dropped.");
-
         transform.position = dropPosition;
 
         // Show the item again
